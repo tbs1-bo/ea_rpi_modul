@@ -21,7 +21,7 @@ class EAModul:
         GPIO.setup(self.__leds, GPIO.OUT)
         
 
-    def lies_taster(self, nr=0):
+    def taster_gedrueckt(self, nr=0):
         """Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den Wert zurück."""
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
@@ -43,8 +43,16 @@ class EAModul:
 
 
 if __name__ == "__main__":
-    ea = EAModul(1,2,3,4)
-    ea.schalte_led(1, True)
-    ea.schalte_led(1, False)
-    ea.cleanup()
+    ea_modul = EAModul(1,2,3,4)
+
+    ea_modul.schalte_led(1, False)
+    try:
+        while True:
+            ea_modul.schalte_led(0, True)
+            if ea_modul.taster_gedrueckt(0):
+                ea_modul.schalte_led(0, False)
+
+
+    except KeyboardInterrupt:
+            ea_modul.cleanup()
 
