@@ -12,14 +12,14 @@ class EAModul:
         GPIO.setup(self.__leds, GPIO.OUT)
         
 
-    def lies_taster(self, nr=1):
+    def lies_taster(self, nr=0):
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
             raise Exception("Falsche Tasternummer. Muss 1 oder 2 sein.")
 
 
-    def schalte_led(self, nr=1, an_aus=True):
+    def schalte_led(self, nr=0, an_aus=True):
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
