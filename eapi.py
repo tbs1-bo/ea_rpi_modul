@@ -52,7 +52,6 @@ if __name__ == "__main__":
             if ea_modul.taster_gedrueckt(0):
                 ea_modul.schalte_led(0, False)
 
-
     except KeyboardInterrupt:
             ea_modul.cleanup()
 
