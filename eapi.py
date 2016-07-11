@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 class EAModul:
     """
     Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls für
-    den Raspberry Pi.
+    den Raspberry Pi. Es besteht aus drei LED und zwei Tastern.
     """
 
     def __init__(self, pin_taster0, pin_taster1, pin_led0, pin_led1, pin_led2):
