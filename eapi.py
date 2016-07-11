@@ -1,7 +1,15 @@
 import RPi.GPIO as GPIO
 
 class EAModul:
+    """
+    Das E/A-Modul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls für
+    den Raspberry Pi.
+    """
+
     def __init__(self, pin_taster1, pin_taster2, pin_led1, pin_led2, pin_led3):
+        """
+        Die PINs des Moduls werden konfiguriert.
+        """
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
 
@@ -13,6 +21,7 @@ class EAModul:
         
 
     def lies_taster(self, nr=0):
+        """Lies den Wert des Tasters mit der gegebenen Nummer aus."""
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
@@ -20,6 +29,7 @@ class EAModul:
 
 
     def schalte_led(self, nr=0, an_aus=True):
+        """Schalte die LED mit der gegebenen Nummer ein oder aus."""
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
@@ -27,6 +37,7 @@ class EAModul:
 
 
     def cleanup(self):
+        """Setzt alle Pins des Pi wieder in den Ausgangszustand."""
         GPIO.cleanup()
 
 
