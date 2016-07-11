@@ -2,26 +2,27 @@ import RPi.GPIO as GPIO
 
 class EAModul:
     """
-    Das E/A-Modul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls für
+    Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls für
     den Raspberry Pi.
     """
 
-    def __init__(self, pin_taster1, pin_taster2, pin_led1, pin_led2, pin_led3):
+    def __init__(self, pin_taster0, pin_taster1, pin_led0, pin_led1, pin_led2):
         """
-        Die PINs des Moduls werden konfiguriert.
+        Die PINs des Moduls werden konfiguriert. Pins der LED werden als Ausgänge,
+        und Pins der Taster als Eingänge konfiguriert.
         """
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
 
-        self.__taster = [pin_taster1, pin_taster2]
+        self.__taster = [pin_taster0, pin_taster1]
         GPIO.setup(self.__taster, GPIO.IN)
 
-        self.__leds = [pin_led1, pin_led2, pin_led3]
+        self.__leds = [pin_led0, pin_led1, pin_led2]
         GPIO.setup(self.__leds, GPIO.OUT)
         
 
     def lies_taster(self, nr=0):
-        """Lies den Wert des Tasters mit der gegebenen Nummer aus."""
+        """Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den Wert zurück."""
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
@@ -29,7 +30,7 @@ class EAModul:
 
 
     def schalte_led(self, nr=0, an_aus=True):
-        """Schalte die LED mit der gegebenen Nummer ein oder aus."""
+        """Schalte die LED mit der gegebenen Nummer ein (True) oder aus (False)."""
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
