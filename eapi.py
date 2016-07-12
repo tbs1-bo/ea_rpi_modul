@@ -3,7 +3,7 @@ Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
 ist."""
 
 # Wenn das OS eine ARM-Achritektur ist - und daher vermutlich auf dem
-# Raspberry Pi läuft - wird die Original GPIO-Bib import. Sonst wird ein Dummy
+# Raspberry Pi läuft - wird die Original GPIO-Bib importiert. Sonst wird ein Dummy
 # verwendet.
 import os
 if "arm" in os.uname()[4]:
