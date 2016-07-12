@@ -2,7 +2,15 @@
 Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
 ist."""
 
-import RPi.GPIO as GPIO
+# Wenn das OS eine ARM-Achritektur ist - und daher vermutlich auf dem
+# Raspberry Pi läuft - wird die Original GPIO-Bib import. Sonst wird ein Dummy
+# verwendet.
+import os
+if "arm" in os.uname()[4]:
+    import RPi.GPIO as GPIO
+else:
+    import RPiDummy.GPIO as GPIO
+
 
 class EAModul:
     """Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls
@@ -58,11 +66,13 @@ if __name__ == "__main__":
 
     ea_modul.schalte_led(1, False)
     try:
-        while True:
+        for i in range(5):
             ea_modul.schalte_led(0, True)
             if ea_modul.taster_gedrueckt(0):
                 ea_modul.schalte_led(0, False)
 
     except KeyboardInterrupt:
+        ea_modul.cleanup()
+    finally:
         ea_modul.cleanup()
 
