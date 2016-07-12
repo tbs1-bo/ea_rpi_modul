@@ -2,13 +2,13 @@ import RPi.GPIO as GPIO
 
 class EAModul:
     """
-    Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls für
-    den Raspberry Pi. Es besteht aus drei LED und zwei Tastern.
+    Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls 
+    für den Raspberry Pi. Es besteht aus drei LED und zwei Tastern.
     """
 
     def __init__(self, pin_taster0, pin_taster1, pin_led0, pin_led1, pin_led2):
         """
-        Die PINs des Moduls werden konfiguriert. Pins der LED werden als 
+        Die PINs des Moduls werden konfiguriert. Pins der LED werden als
         Ausgänge, und Pins der Taster als Eingänge konfiguriert.
         """
         GPIO.cleanup()
@@ -19,7 +19,7 @@ class EAModul:
 
         self.__leds = [pin_led0, pin_led1, pin_led2]
         GPIO.setup(self.__leds, GPIO.OUT)
-        
+
 
     def taster_gedrueckt(self, nr=0):
         """
@@ -29,8 +29,9 @@ class EAModul:
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
-            raise Exception("Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
-                ln = len(self.__taster)-1))
+            raise Exception(
+                "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
+                    ln=len(self.__taster)-1))
 
 
     def schalte_led(self, nr=0, an_aus=True):
@@ -40,8 +41,9 @@ class EAModul:
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
-            raise Exception("Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
-                ln = len(self.__leds)-1))
+            raise Exception(
+                "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
+                    ln=len(self.__leds)-1))
 
 
     def cleanup(self):
@@ -50,7 +52,7 @@ class EAModul:
 
 
 if __name__ == "__main__":
-    ea_modul = EAModul(1,2,3,4, 5)
+    ea_modul = EAModul(1, 2, 3, 4, 5)
 
     ea_modul.schalte_led(1, False)
     try:
