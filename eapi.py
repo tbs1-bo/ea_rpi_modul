@@ -29,8 +29,8 @@ class EAModul:
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
-            raise Exception(
-                "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(ln=len(self.__taster)-1)
+            raise Exception("Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
+                ln = len(self.__taster)-1))
 
 
     def schalte_led(self, nr=0, an_aus=True):
@@ -40,8 +40,8 @@ class EAModul:
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
-            raise Exception(
-                "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(ln=len(self.__leds)-1)
+            raise Exception("Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
+                ln = len(self.__leds)-1))
 
 
     def cleanup(self):
