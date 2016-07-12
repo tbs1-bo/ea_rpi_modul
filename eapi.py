@@ -8,8 +8,8 @@ class EAModul:
 
     def __init__(self, pin_taster0, pin_taster1, pin_led0, pin_led1, pin_led2):
         """
-        Die PINs des Moduls werden konfiguriert. Pins der LED werden als Ausgänge,
-        und Pins der Taster als Eingänge konfiguriert.
+        Die PINs des Moduls werden konfiguriert. Pins der LED werden als 
+        Ausgänge, und Pins der Taster als Eingänge konfiguriert.
         """
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
@@ -22,19 +22,26 @@ class EAModul:
         
 
     def taster_gedrueckt(self, nr=0):
-        """Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den Wert zurück."""
+        """
+        Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den
+        Wert zurück.
+        """
         if 0 <= nr < len(self.__taster):
             return GPIO.input(self.__taster[nr])
         else:
-            raise Exception("Falsche Tasternummer. Muss 1 oder 2 sein.")
+            raise Exception(
+                "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(ln=len(self.__taster)-1)
 
 
     def schalte_led(self, nr=0, an_aus=True):
-        """Schalte die LED mit der gegebenen Nummer ein (True) oder aus (False)."""
+        """
+        Schalte die LED mit der gegebenen Nummer ein (True) oder aus (False).
+        """
         if 0 <= nr < len(self.__leds):
             return GPIO.output(self.__leds[nr], an_aus)
         else:
-            raise Exception("Falsche LED-Nummer. Muss 1 oder 2 sein.")        
+            raise Exception(
+                "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(ln=len(self.__leds)-1)
 
 
     def cleanup(self):
@@ -43,7 +50,7 @@ class EAModul:
 
 
 if __name__ == "__main__":
-    ea_modul = EAModul(1,2,3,4)
+    ea_modul = EAModul(1,2,3,4, 5)
 
     ea_modul.schalte_led(1, False)
     try:
