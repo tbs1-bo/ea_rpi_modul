@@ -21,7 +21,7 @@ def input(pin):
         
 def setmode(board):    
     """Macht nichts."""
-    log.info("Setze mode für " + str(board))
+    log.info("Setze boardmode auf " + str(board))
 
 
 def setup(pin, in_out):
