@@ -10,14 +10,14 @@ Klasse EAModul
 
 Mit Hilfe der Klasse `EAModul` können die Taster und LED einfach angesteuert bzw. ausgelesen werden. 
 
-    ea = EAModul(1,2,3,4,5)    #1
-    ea.schalte_led(0, True)    #2
-    ea.schalte_led(0, False)   #3
+    ea = EAModul(1,2,3,4,5)        #1
+    ea.schalte_led(0, True)        #2
+    ea.schalte_led(0, False)       #3
     
-    if ea.taster_gedrueckt(0): #4
+    if ea.taster_gedrueckt(0):     #4
         print("Taster 0 gedrückt")
         
-    ea.cleanup()               #5
+    ea.cleanup()                   #5
 
 
 
