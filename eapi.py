@@ -21,7 +21,6 @@ class EAModul:
         Die PINs des Moduls werden konfiguriert. Pins der LED werden als
         Ausgänge, und Pins der Taster als Eingänge konfiguriert.
         """
-        GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
 
         self.__taster = [pin_taster0, pin_taster1]
