@@ -9,7 +9,7 @@ import setuptools
 setuptools.setup(
     name="eapi",
     url="https://github.com/pintman/ea_rpi_modul",
-    version="0.1.5",
+    version="0.1.6",
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
     long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls für den Raspberry. Für die Ausgabe dienen LEDs und für die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
     author="Marco Bakera",

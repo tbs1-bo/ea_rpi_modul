@@ -2,17 +2,14 @@
 Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
 ist."""
 
-# Wenn das OS eine ARM-Achritektur ist - und daher vermutlich auf dem
-# Raspberry Pi läuft - wird die Original GPIO-Bib importiert. Sonst wird ein Dummy
-# verwendet.
-import os
-if "nt" == os.name:
-    import RPiDummy.GPIO as GPIO
-elif "arm" in os.uname()[4]: # uname wird nicht unter Windows unterstützt.
-    import RPi.GPIO as GPIO
-else:
-    import RPiDummy.GPIO as GPIO
 
+# Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird 
+# ein Dummy verwendet.
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    import RPiDummy.GPIO as GPIO
+    print("!! Es wird eine Dummy Klasse für GPIO-PINs wird verwendet!!")
 
 class EAModul:
     """Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls
