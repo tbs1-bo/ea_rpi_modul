@@ -9,12 +9,20 @@ import setuptools
 setuptools.setup(
     name="eapi",
     url="https://github.com/pintman/ea_rpi_modul",
-    version="0.1.3",
+    version="0.1.4",
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
     long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls für den Raspberry. Für die Ausgabe dienen LEDs und für die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
     author="Marco Bakera",
     author_email="bakera@tbs1.de",
-    packages=setuptools.find_packages())
+    packages=setuptools.find_packages(),
+    classifiers=[ # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Education",
+        "Natural Language :: German",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Education",
+        "Topic :: System :: Hardware",
+    ])
 
 
 # Ein Release kann wie folgt erstellt werden
