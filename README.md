@@ -12,6 +12,8 @@ Klasse EAModul
 Mit Hilfe der Klasse `EAModul` können die Taster und LED einfach angesteuert
 bzw. ausgelesen werden.
 
+    from eapi.eapi import EAModul  #0
+
     ea = EAModul(1,2,3,4,5)        #1
     ea.schalte_led(0, True)        #2
     ea.schalte_led(0, False)       #3
@@ -21,7 +23,7 @@ bzw. ausgelesen werden.
         
     ea.cleanup()                   #5
 
-
+**#0** Aus dem Modul `eapi.eapi` wird die Klasse `EAModul` importiert.
 
 **#1** Bei der Initialisierung müssen die auf dem RaspberryPi verwendeten PINs
 angegeben werden: zuerst die beiden Pins für die Taster, es folgen drei
@@ -45,3 +47,9 @@ Die Bibliothek ist für die Verwendung mit dem Raspberry Pi konzipiert. Wenn
 jedoch kein Pi angeschlossen ist, wird eine Bibliothek mit Dummyfunktionen
 geladen. Diese gibt für die Eingänge (Taster) zufällige Werte zurück. Bei
 Ausgaben (LED) auf den Ausgängen erfolgt eine Textausgabe auf der Konsole.
+
+Installation
+============
+
+Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen [eapi](https://pypi.python.org/pypi/eapi). Es kann mit `pip install eapi` installiert werden.
+
