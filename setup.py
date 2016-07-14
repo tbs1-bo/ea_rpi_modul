@@ -3,6 +3,9 @@ import setuptools
 
 # gemäß der Beschreibung von
 # https://packaging.python.org/distributing/
+# Weitere Hinweise stehen in dem Buch "Expert Python Programming" in 
+# Kapitel 5.
+#
 setuptools.setup(
     name="eapi",
     url="https://github.com/pintman/ea_rpi_modul",
