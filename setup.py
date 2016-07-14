@@ -22,3 +22,15 @@ setuptools.setup(
 
 # Mit dem folgenden Befehl kann ein neues Release veröffentlicht werden
 # python3 setup.py sdist upload
+
+# Damit der Upload klappt, muss eine Datei ~/.pypirc mit Zugangsdaten für ein
+# Account bei PyPi vorhanden sein. Der Inhalt der Datei könnte wie folgt aussehen:
+#
+#[distutils]
+#index-servers=pypi
+#
+#[pypi]
+#repository = https://upload.pypi.io/legacy/
+#username = pintman
+#password = *****
+
