@@ -58,3 +58,10 @@ jedoch kein Pi angeschlossen ist, wird eine Bibliothek mit Dummyfunktionen
 geladen. Diese gibt für die Eingänge (Taster) zufällige Werte zurück. Bei
 Ausgaben (LED) auf den Ausgängen erfolgt eine Textausgabe auf der Konsole.
 
+Fehler oder Bugs
+================
+
+Du hast einen Fehler oder Bug gefunden? Dann erstelle bitte einen
+Bugreport. Dafür musst du oben auf "Issues" und dann auf "New Issue"
+klicken. Danach kannst du alle Details angeben.
+
