@@ -13,6 +13,12 @@ Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
 installiert werden. Wenn die Installation nur lokal für einen User erfolgen
 soll, heißt der Befehl `pip install --user eapi`.
 
+Upgrade
+-------
+
+Wenn die Bibliothek bereits installiert aber nur in einer älteren Version
+vorliegt, kann sie mit dem Befehl `pip install --upgrade eapi` auf den
+neuesten Stand gebracht werden.
 
 Klasse EAModul
 ==============
