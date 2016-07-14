@@ -16,7 +16,7 @@ soll, heißt der Befehl `pip install --user eapi`.
 Upgrade
 -------
 
-Wenn die Bibliothek bereits installiert aber nur in einer älteren Version
+Wenn die Bibliothek bereits installiert ist aber nur in einer älteren Version
 vorliegt, kann sie mit dem Befehl `pip install --upgrade eapi` auf den
 neuesten Stand gebracht werden.
 
