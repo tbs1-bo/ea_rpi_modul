@@ -6,7 +6,9 @@ ist."""
 # Raspberry Pi läuft - wird die Original GPIO-Bib importiert. Sonst wird ein Dummy
 # verwendet.
 import os
-if "arm" in os.uname()[4]:
+if "nt" == os.name:
+    import RPiDummy.GPIO as GPIO
+elif "arm" in os.uname()[4]: # uname wird nicht unter Windows unterstützt.
     import RPi.GPIO as GPIO
 else:
     import RPiDummy.GPIO as GPIO
