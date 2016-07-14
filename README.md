@@ -55,6 +55,12 @@ sind nummeriert (beginnend bei 0).
 **#5** Mit der Methode `cleanup()` werden die Pins des Pi wieder auf den
 Ausgangszustand zurückgesetzt.
 
+Hilfe erhalten
+--------------
+
+Der Quelltext ist gut dokumentiert. Man kann sich die Hilfe der Klasse
+`EAModul` mit dem Befehl `help(EAModul)` anzeigen lassen.
+
 
 Verwendung ohne Raspberry Pi
 ============================
