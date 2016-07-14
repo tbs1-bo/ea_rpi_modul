@@ -9,3 +9,7 @@ setuptools.setup(
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
     author="Marco Bakera",
     packages=setuptools.find_packages())
+
+
+# Mit dem folgenden Befehl kann ein neues Release veröffentlich werden
+# python3 setup.py sdist upload
