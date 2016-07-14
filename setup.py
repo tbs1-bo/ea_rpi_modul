@@ -39,6 +39,6 @@ setuptools.setup(
 #
 #[pypi]
 #repository = https://upload.pypi.io/legacy/
-#username = pintman
-#password = *****
+#username = mein_username
+#password = mein_passwort
 
