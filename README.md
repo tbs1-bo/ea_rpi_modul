@@ -4,6 +4,16 @@ ea_rpi_modul
 Bei dem Projekt handelt es sich um eine Python Bibliothek für ein E/A-Modul
 (Eingabe-Ausgabe-Modul) für den Raspberry Pi.
 
+
+Installation
+============
+
+Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
+[eapi](https://pypi.python.org/pypi/eapi). Es kann mit `pip install eapi`
+installiert werden. Wenn die Installation nur lokal für einen User erfolgen
+soll, heißt der Befehl `pip install --user eapi`.
+
+
 Klasse EAModul
 ==============
 
@@ -48,10 +58,3 @@ jedoch kein Pi angeschlossen ist, wird eine Bibliothek mit Dummyfunktionen
 geladen. Diese gibt für die Eingänge (Taster) zufällige Werte zurück. Bei
 Ausgaben (LED) auf den Ausgängen erfolgt eine Textausgabe auf der Konsole.
 
-Installation
-============
-
-Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
-[eapi](https://pypi.python.org/pypi/eapi). Es kann mit `pip install eapi`
-installiert werden. Wenn die Installation nur lokal für einen User erfolgen
-soll, heißt der Befehl `pip install --user eapi`.
