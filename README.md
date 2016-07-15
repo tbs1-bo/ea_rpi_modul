@@ -59,8 +59,10 @@ Beispiel 2
 ----------
 
 In einem weiteren Beispiel können wir sehen, wie man auf das Drücken eines
-Tasters reagiert.
-
+Tasters reagiert. Die rote und grüne LED blinken fortwährend im Wechsel. Wenn
+man während des Programmablaufes irgendwann auf den Taster 1 drückt, beendet
+sich das Programm. Über den Taster 0 kann die gelbe LED an- und beim
+Loslassen des Tasters wieder ausgeschaltet werden.
 
     from eapi.eapi import EAModul
     import time
