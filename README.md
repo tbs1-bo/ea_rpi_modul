@@ -9,7 +9,7 @@ Installation
 ============
 
 Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
-[eapi](https://pypi.python.org/pypi/eapi). Es kann mit `pip install eapi`
+[eapi](https://pypi.python.org/pypi/eapi). Es kann mit `sudo pip3 install eapi`
 installiert werden. Wenn die Installation nur lokal für einen User erfolgen
 soll, heißt der Befehl `pip install --user eapi`.
 
