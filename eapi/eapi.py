@@ -69,7 +69,7 @@ class EAModul:
         if taster_nr < 0 or taster_nr >= len(self.__taster):
             raise Exception("Falsche Taster Nummer." + taster_nr)
 
-        GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH, bouncetime=10)
+        GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH)
         GPIO.add_event_callback(self.__taster[taster_nr], methode)
 
 
