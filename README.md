@@ -28,16 +28,16 @@ Klasse EAModul
 Mit Hilfe der Klasse `EAModul` können die Taster und LED einfach angesteuert
 bzw. ausgelesen werden.
 
-    from eapi.eapi import EAModul  #0
+    from eapi.eapi import EAModul     #0
 
-    ea = EAModul(1,2,3,4,5)        #1
-    ea.schalte_led(0, True)        #2
-    ea.schalte_led(0, False)       #3
+    ea = EAModul(29, 31, 33, 35, 37)  #1
+    ea.schalte_led(0, True)           #2
+    ea.schalte_led(0, False)          #3
     
-    if ea.taster_gedrueckt(0):     #4
+    if ea.taster_gedrueckt(0):        #4
         print("Taster 0 gedrückt")
         
-    ea.cleanup()                   #5
+    ea.cleanup()                      #5
 
 **#0** Aus dem Modul `eapi.eapi` wird die Klasse `EAModul` importiert.
 
