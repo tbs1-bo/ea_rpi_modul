@@ -55,6 +55,58 @@ sind nummeriert (beginnend bei 0).
 **#5** Mit der Methode `cleanup()` werden die Pins des Pi wieder auf den
 Ausgangszustand zurückgesetzt.
 
+Beispiel 2
+----------
+
+In einem weiteren Beispiel können wir sehen, wie man auf das Drücken eines
+Tasters reagiert.
+
+<code>
+from eapi.eapi import EAModul
+import time
+
+ea_modul = EAModul()                                     #1
+
+def taster0_gedrueckt(pin):                              #2
+    global ea_modul
+    ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+
+ea_modul.taster_event_registrieren(0, taster0_gedrueckt) #3
+
+try:
+    while not ea_modul.taster_gedrueckt(1):              #4
+	    ea_modul.schalte_led(EAModul.LED_ROT, True)
+        time.sleep(0.2)
+		ea_modul.schalte_led(EAModul.LED_ROT, False)
+        time.sleep(0.2)
+
+        ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+        time.sleep(0.5)
+		ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+        time.sleep(0.2)
+
+except KeyboardInterrupt:
+    ea_modul.cleanup()
+finally:
+    ea_modul.cleanup()
+
+</code>
+
+
+**#1** Das Modul wird mit der Standardbeschaltung initialisiert. Hierbei sind
+die PINs der Reihe nach an den Pins 29, 31, 33, 35 und 37 angeschlossen.
+
+
+**#2** Die Methode wird aufgerufen, sobald der Taster 0 gedrückt wird. Damit
+dies passiert, wird sie gleich dafür registriert.
+
+**#3** Die Methode wird für den Taster 0 registriert und aufgerufen, sobald
+der Taster gedrückt wird.
+
+**#4** Der Taster wird in einer Schleife immer wieder abgefragt. Solang der
+Taster zum Zeitpunkt der Abfrage nicht gedrückt ist, läuft die Schleife weiter.
+
+
 Hilfe erhalten
 --------------
 
