@@ -61,36 +61,35 @@ Beispiel 2
 In einem weiteren Beispiel können wir sehen, wie man auf das Drücken eines
 Tasters reagiert.
 
-<code>
-from eapi.eapi import EAModul
-import time
 
-ea_modul = EAModul()                                     #1
+    from eapi.eapi import EAModul
+    import time
 
-def taster0_gedrueckt(pin):                              #2
-    global ea_modul
-    ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+    ea_modul = EAModul()                                     #1
 
-ea_modul.taster_event_registrieren(0, taster0_gedrueckt) #3
+    def taster0_gedrueckt(pin):                              #2
+        global ea_modul
+        ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
 
-try:
-    while not ea_modul.taster_gedrueckt(1):              #4
-	    ea_modul.schalte_led(EAModul.LED_ROT, True)
-        time.sleep(0.2)
-		ea_modul.schalte_led(EAModul.LED_ROT, False)
-        time.sleep(0.2)
+    ea_modul.taster_event_registrieren(0, taster0_gedrueckt) #3
 
-        ea_modul.schalte_led(EAModul.LED_GRUEN, True)
-        time.sleep(0.5)
-		ea_modul.schalte_led(EAModul.LED_GRUEN, False)
-        time.sleep(0.2)
+    try:
+        while not ea_modul.taster_gedrueckt(1):              #4
+	        ea_modul.schalte_led(EAModul.LED_ROT, True)
+            time.sleep(0.2)
+		    ea_modul.schalte_led(EAModul.LED_ROT, False)
+            time.sleep(0.2)
 
-except KeyboardInterrupt:
-    ea_modul.cleanup()
-finally:
-    ea_modul.cleanup()
+            ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+            time.sleep(0.5)
+		    ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+            time.sleep(0.2)
 
-</code>
+    except KeyboardInterrupt:
+        ea_modul.cleanup()
+    finally:
+        ea_modul.cleanup()
+
 
 
 **#1** Das Modul wird mit der Standardbeschaltung initialisiert. Hierbei sind
