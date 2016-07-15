@@ -15,10 +15,17 @@ class EAModul:
     """Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls
     für den Raspberry Pi. Es besteht aus drei LED und zwei Tastern."""
 
-    def __init__(self, pin_taster0, pin_taster1, pin_led0, pin_led1, pin_led2):
+    LED_ROT = 0
+    LED_GELB = 1
+    LED_GRUEN = 2
+
+    def __init__(self, pin_taster0=29, pin_taster1=31, pin_led0=33, pin_led1=35, pin_led2=37):
         """
-        Die PINs des Moduls werden konfiguriert. Pins der LED werden als
-        Ausgänge, und Pins der Taster als Eingänge konfiguriert.
+        Die PINs des Moduls werden konfiguriert.
+
+        Pins der LED werden als Ausgänge, und Pins der Taster als Eingänge
+        konfiguriert. Wenn keine PINS angegeben werden, werden die PINs
+        oberhalb des GND Pins links unten verwendet.
         """
         GPIO.setmode(GPIO.BOARD)
 
@@ -52,6 +59,18 @@ class EAModul:
             raise Exception(
                 "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self.__leds)-1))
+
+    def taster_event_registrieren(self, taster_nr, methode):
+        """Registriere eine Methode, die bei Betätigung ausgeführt wird.
+
+        Die übergebene Methode muss ein Argument haben und wird mit der
+        Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt
+        oder losgelassen wird."""
+        if taster_nr < 0 or taster_nr >= len(self.__taster):
+            raise Exception("Falsche Taster Nummer." + taster_nr)
+
+        GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH, bouncetime=10)
+        GPIO.add_event_callback(self.__taster[taster_nr], methode)
 
 
     def cleanup(self):
