@@ -1,6 +1,5 @@
 from eapi.eapi import EAModul
 import time
-import RPi.GPIO as GPIO
 
 if __name__ == "__main__":
     # 6 PINs unten links auf dem Pi verwenden. 1 PIN oben links für 3,3V.
