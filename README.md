@@ -13,6 +13,10 @@ Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
 installiert werden. Wenn die Installation nur lokal für einen User erfolgen
 soll, heißt der Befehl `pip install --user eapi`.
 
+Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
+entfallen.
+
+
 Upgrade
 -------
 
