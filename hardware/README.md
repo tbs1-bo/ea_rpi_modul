@@ -7,11 +7,9 @@ Das E/A-Modul ist eine kleine Platine, die über zwei Taster für Eingaben und d
 
 Das Modul wird an fünf GPIO-Pins angeschlossen und benötigt zusätzlich einen 3,3-V-Pin und einen Masse-Pin für die Spannungsversorgung.
 
-<img src="./ea_rpi_modul_an_pi.jpg" width="600" />
-
 Taster
 ------
-Die Eingabepins sind werden jeweils über einen Pulldownwiderstand (R2 = R3 = 10 kΩ) auf Massepotential gelegt. Nach Betätigung eines Tasters wird der jeweilige Eingabepin über den Widerstand R1 = 1 kΩ mit den 3,3 V verbunden. Durch den Spannungsteiler ergibt sich am Pin ein Potential von etwa 3 V, welches sicher als 1-Signal erkannt wird.
+Die Eingabepins werden jeweils über einen Pulldownwiderstand (R2 = R3 = 10 kΩ) auf Massepotential gelegt. Nach Betätigung eines Tasters wird der jeweilige Eingabepin über den Widerstand R1 = 1 kΩ mit den 3,3 V verbunden. Durch den Spannungsteiler ergibt sich am Pin ein Potential von etwa 3 V, welches sicher als 1-Signal erkannt wird.
 
 LED
 ---
@@ -29,6 +27,8 @@ Variante mit Stiftleiste
 Die erste Variante wird über eine Stiftleiste an den Raspberry Pi angeschlossen. Dazu werden sieben Jumperwire (female-female) benötigt. Die GPIO-Pins des Raspberry Pi können frei gewählt werden.
 
 ![E/A-Modul mit Stiftleiste](./ea_rpi_modul_jw_600.jpg)
+
+<img src="./ea_rpi_modul_an_pi.jpg" width="600" />
 
 Variante mit Wannenstecker
 --------------------------
