@@ -13,7 +13,7 @@ setuptools.setup(
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
     long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls für den Raspberry. Für die Ausgabe dienen LEDs und für die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
     author="Marco Bakera",
-    author_email="bakera@tbs1.de",
+    author_email="pintman@bakera.de",
     packages=setuptools.find_packages(),
     classifiers=[ # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 4 - Beta",
