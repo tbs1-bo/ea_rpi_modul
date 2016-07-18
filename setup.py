@@ -11,7 +11,7 @@ setuptools.setup(
     url="https://github.com/pintman/ea_rpi_modul",
     version="0.1.8",
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
-    long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls für den Raspberry. Für die Ausgabe dienen LEDs und für die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
+    long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls fuer den Raspberry. Fuer die Ausgabe dienen LEDs und fuer die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
     author="Marco Bakera",
     author_email="pintman@bakera.de",
     packages=setuptools.find_packages(),
