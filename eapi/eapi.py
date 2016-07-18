@@ -1,4 +1,4 @@
-"""Ein Module für die Verwendung des Eingabe-Ausgabe-Moduls für den Raspberry
+"""Ein Modul für die Verwendung des Eingabe-Ausgabe-Moduls für den Raspberry
 Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
 ist."""
 
