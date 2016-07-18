@@ -21,8 +21,9 @@ def __alle_pins_ausgeben():
 
 def input(pin):
     """Dummy Methode, die zufällig True oder False zurückgibt."""
-    log.info("Input für pin " + str(pin))
-    if random.randint(0, 1) == 0:
+    r = random.randint(0, 1)
+    log.info("Zufälliger Input für Pin " + str(pin) + ": " + str(r==0))
+    if r == 0:
         return True
     else:
         return False
