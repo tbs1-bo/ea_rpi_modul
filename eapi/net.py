@@ -1,12 +1,12 @@
 """Ein Modul, das die Eingabe-Ausgabe-Module für den Raspberry Pi
 netzwerkfähig macht.
 
-Der Server kann mit zwei Zeilen einfach gestartet werden
+Der Server kann mit den folgenden Zeilen einfach gestartet werden:
 
-from eapi.net import EAModulServer
+  from eapi.net import EAModulServer
 
-easerver = EAModulServer("localhost", 9999)
-easerver.serve_forever()
+  easerver = EAModulServer("localhost", 9999)
+  easerver.serve_forever()
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
 gesendeter Request besteht aus genau einem Byte. Die letzen drei Bit der Zahl
@@ -17,11 +17,11 @@ gelbe LED an und die rote und grüne LED aus.
 Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
 
-$ echo -en '\x02' | nc -4u localhost 9998
+  $ echo -en '\\x02' | nc -4u localhost 9999
 
-Hex 2 (\x02) entspricht der Bitfolge 010. Mit der Option -e wird eine
-Escapesequenz ohne Zeilvorschub (-n) verschickt - also nur das eine Byte. Die
-Optionen -4 von nc senden eine IPv4-Paket, das als UDP-Paket (-u) verschickt
+Hex 2 (\\x02) entspricht der Bitfolge 010. Mit der Option -e wird eine
+Escapesequenz ohne Zeilenumbruch (-n) verschickt - also nur das eine Byte. Die
+Option -4 von nc senden eine IPv4-Paket, das als UDP-Paket (-u) verschickt
 werden soll.
 """
 
@@ -34,6 +34,9 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
     eamodul = EAModul()
 
     def handle(self):
+        """Der UDP-Handler bearbeitet UDP-Requests gemäß der Modulbeschreibung 
+        (s.o.)."""
+
         # Der Request besteht aus einem Tupel aus Daten und Socket des
         # Senders. Wir greifen die Daten heraus.
         #
@@ -59,7 +62,11 @@ class EAModulServer(socketserver.UDPServer):
 
     def __init__(self, host, port, eamodul=None):
         """Starte einen Server auf dem angegebnen hostname, oder IP-Adresse - 
-        lokale Server können hier auch 'localhost' als Name verwenden. """
+        lokale Server können hier auch 'localhost' als Name verwenden.
+
+        Über den Parameter eamodul kann ein EAModul übergeben werden. Wird
+        kein Modul übergeben, wird ein Standardmodul selbst erstellt.
+        """
 
         super().__init__((host,port), EAModulUDPHandler)
 
