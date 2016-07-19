@@ -9,20 +9,29 @@ Der Server kann mit den folgenden Zeilen einfach gestartet werden:
   easerver.serve_forever()
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
-gesendeter Request besteht aus genau einem Byte. Die letzen drei Bit der Zahl
-(0 oder 1), werden als Werte für die rote, gelbe oder grüne LED
-interpretiert. Die Bitsequenz ?????010 (? bedeutet 'beliebig') schaltet die
-gelbe LED an und die rote und grüne LED aus.
+gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
+werden ignoriert. Die letzen drei Bit der Zahl (0 oder 1), werden als Werte
+für die rote, gelbe oder grüne LED interpretiert:
+
+  ? ? ? ? ? 0 1 0
+            ^ ^ ^
+            | | |
+            | | grün
+            | gelb
+            rot
+
+Die Bitsequenz ?????010 (? bedeutet 'beliebig') schaltet die gelbe LED an und
+die rote und grüne LED aus.
 
 Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
 
   $ echo -en '\\x02' | nc -4u localhost 9999
 
-Hex 2 (\\x02) entspricht der Bitfolge 010. Mit der Option -e wird eine
-Escapesequenz ohne Zeilenumbruch (-n) verschickt - also nur das eine Byte. Die
-Option -4 von nc senden eine IPv4-Paket, das als UDP-Paket (-u) verschickt
-werden soll.
+Hex 2 (\\x02) entspricht der Bitfolge 00000010. Mit der Option -e wird eine
+Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
+gesendet werden soll - also nur das eine Byte. Die Option -4 von nc sendet ein
+IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
 """
 
 import socketserver
