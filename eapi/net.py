@@ -29,8 +29,7 @@ import socketserver
 from eapi.eapi import EAModul
 
 class EAModulUDPHandler(socketserver.BaseRequestHandler):
-    """Ein Handler für UDP request an den EAModulServer.
-    """
+    """Ein Handler für UDP requests an den EAModulServer."""
 
     eamodul = EAModul()
 
@@ -45,7 +44,7 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
             return
 
         byte = int(data[0])
-        print("Byte empfangen", byte)
+        print("Byte empfangen:", byte)
         self.eamodul.schalte_led(EAModul.LED_ROT, byte & 1 == 1)
         self.eamodul.schalte_led(EAModul.LED_GELB, byte & 2 == 2)
         self.eamodul.schalte_led(EAModul.LED_GRUEN, byte & 4 == 4)
@@ -66,7 +65,3 @@ class EAModulServer(socketserver.UDPServer):
 
         if eamodul:
             EAModulUDPHandler.eamodul = eamodul
-
-#if __name__ == "__main__":
-#    easerver = EAModulServer("localhost", 9998)
-#    easerver.serve_forever()
