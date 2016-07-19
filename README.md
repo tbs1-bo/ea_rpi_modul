@@ -130,6 +130,15 @@ jedoch kein Pi angeschlossen ist, wird eine Bibliothek mit Dummyfunktionen
 geladen. Diese gibt für die Eingänge (Taster) zufällige Werte zurück. Bei
 Ausgaben (LED) auf den Ausgängen erfolgt eine Textausgabe auf der Konsole.
 
+Vernetzung
+==========
+
+Das EA-Modul ist netzwerkfähig und lässt sich über ein Netzwerk ansteuern. So
+kann man die drei LEDs über einen UDP-Server im Netz leicht zugänglich
+machen. Ein Erläuterung über das genaue Vorgehen befindet sich in der
+Dokumentation des Moduls `eapi.net`. Sie kann mit `pydoc3 eapi.net` abgerufen
+werden.
+
 Fehler oder Bugs
 ================
 
