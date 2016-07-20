@@ -8,6 +8,11 @@ Der Server kann mit den folgenden Zeilen einfach gestartet werden:
   easerver = EAModulServer("localhost", 9999)
   easerver.serve_forever()
 
+Ebenso kann der Server über die Kommandozeile mit dem folgenden Befehl
+gestartet werden. Es werden die oben konfigurierten Werte angenommen:
+
+  python3 -m eapi.net startserver
+
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
 gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
 werden ignoriert. Die letzen drei Bit der Zahl (0 oder 1), werden als Werte
@@ -32,6 +37,7 @@ Hex 2 (\\x02) entspricht der Bitfolge 00000010. Mit der Option -e wird eine
 Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
 gesendet werden soll - also nur das eine Byte. Die Option -4 von nc sendet ein
 IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
+
 """
 
 import socketserver
@@ -81,3 +87,12 @@ class EAModulServer(socketserver.UDPServer):
 
         if eamodul:
             EAModulUDPHandler.eamodul = eamodul
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == "startserver":
+            print("Starte Server auf localhost auf Port 9999")
+            easerver = EAModulServer("localhost", 9999)
+            easerver.serve_forever()
