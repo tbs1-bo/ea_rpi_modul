@@ -9,7 +9,7 @@ Der Server kann mit folgenden Zeilen einfach gestartet werden:
   easerver.serve_forever()
 
 Ebenso kann der Server über die Kommandozeile mit dem folgenden Befehl
-gestartet werden. Es werden die oben konfigurierten Werte verwendet:
+gestartet werden.
 
   $ python3 -m eapi.net startserver
 
@@ -130,20 +130,20 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) >= 2:
+        hostname = input("Hostname (Enter für localhost):")
+        if hostname == '':
+            hostname = 'localhost'
+        port = input("Port (Enter für 9999):")
+        if port == '':
+            port = '9999'
+
         if sys.argv[1] == "startserver":
-            print("Starte Server auf localhost auf Port 9999")
-            easerver = EAModulServer("localhost", 9999)
+            print("Starte Server auf", hostname, "auf Port", port)
+            easerver = EAModulServer(hostname, int(port))
             easerver.serve_forever()
 
         elif sys.argv[1] == "startclient":
             print("Starte Client")
-
-            hostname = input("Hostname (Enter für localhost):")
-            if hostname == '':
-                hostname = 'localhost'
-            port = input("Port (Enter für 9999):")
-            if port == '':
-                port = '9999'
             client = EAModulClient(hostname, int(port))
 
             print("Welche LEDs sollen angeschaltet werden?")
@@ -161,3 +161,5 @@ if __name__ == "__main__":
                     client.sende(rot_an, gelb_an, gruen_an)
                 else:
                     print("Eingabe fehlerhaft, bitte wiederholen!")
+    else:
+        print("Befehl startserver oder startclient angeben")
