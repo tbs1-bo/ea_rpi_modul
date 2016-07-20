@@ -106,7 +106,8 @@ class EAModulClient:
         """
         self.servername = servername
         self.serverport = serverport
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client = socket.socket(socket.AF_INET, # Address Family Internet
+                                    socket.SOCK_DGRAM) # UDP
 
     def sende(self, rot_an, gelb_an, gruen_an):
         """Sende an den Server die Information, welche LEDs an- bzw. 
