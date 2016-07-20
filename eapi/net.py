@@ -129,6 +129,7 @@ class EAModulClient:
 #
 if __name__ == "__main__":
     import sys
+    import re
 
     if len(sys.argv) >= 2:
         hostname = input("Hostname (Enter für localhost):")
@@ -155,12 +156,13 @@ if __name__ == "__main__":
             eingabe = ''
             while eingabe != 'q':
                 eingabe = input()
-                if len(eingabe) == 3:
+                if re.match("^[01]{3}$", eingabe): # Eingabe besteht aus drei 0 oder 1
                     rot_an = eingabe[0] == "1"
                     gelb_an = eingabe[1] == "1"
                     gruen_an = eingabe[2] == "1"
                     client.sende(rot_an, gelb_an, gruen_an)
                 else:
-                    print("Eingabe fehlerhaft, bitte wiederholen!")
+                    print("Eingabe fehlerhaft. Erwarte genau drei Zeichen, nur 0 oder 1.")
+                    print("Bitte wiederholen!")
     else:
-        print("Befehl startserver oder startclient angeben")
+        print("Befehl angeben: startserver oder startclient")
