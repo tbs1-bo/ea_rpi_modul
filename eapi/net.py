@@ -1,7 +1,7 @@
 """Ein Modul, das die Eingabe-Ausgabe-Module für den Raspberry Pi
 netzwerkfähig macht.
 
-Der Server kann mit den folgenden Zeilen einfach gestartet werden:
+Der Server kann mit folgenden Zeilen einfach gestartet werden:
 
   from eapi.net import EAModulServer
 
@@ -9,14 +9,14 @@ Der Server kann mit den folgenden Zeilen einfach gestartet werden:
   easerver.serve_forever()
 
 Ebenso kann der Server über die Kommandozeile mit dem folgenden Befehl
-gestartet werden. Es werden die oben konfigurierten Werte angenommen:
+gestartet werden. Es werden die oben konfigurierten Werte verwendet:
 
-  python3 -m eapi.net startserver
+  $ python3 -m eapi.net startserver
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
 gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
-werden ignoriert. Die letzen drei Bit der Zahl (0 oder 1), werden als Werte
-für die rote, gelbe oder grüne LED interpretiert:
+werden ignoriert. Die letzen drei Bit (0 oder 1) des gesendeten Bytes, werden
+als Werte für die rote, gelbe und grüne LED interpretiert:
 
   ? ? ? ? ? 0 1 0
             ^ ^ ^
@@ -38,8 +38,13 @@ Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
 gesendet werden soll - also nur das eine Byte. Die Option -4 von nc sendet ein
 IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
 
+Das Modul enthält auch einen einfachen Konsolenclient, der über die Konsole
+gestartet werden kann:
+
+  $ python3 -m eapi.net startclient
 """
 
+import socket
 import socketserver
 from eapi.eapi import EAModul
 
@@ -88,6 +93,39 @@ class EAModulServer(socketserver.UDPServer):
         if eamodul:
             EAModulUDPHandler.eamodul = eamodul
 
+class EAModulClient:
+    """Client, um von der Konsole aus auf den EAModulServer zuzugreifen."""
+
+    def __init__(self, servername, serverport):
+        """Starte den Client für einen laufenden Server.
+
+        Der angegebene servername ist eine IP-Adresse oder ein Domainname -
+        für ein lokal laufenden Server kann auch localhost verwendet
+        werden. Mit serverport wird die Portnummer angegeben, über die der
+        Server ansprechbar ist.
+        """
+        self.servername = servername
+        self.serverport = serverport
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def sende(self, rot_an, gelb_an, gruen_an):
+        """Sende an den Server die Information, welche LEDs an- bzw. 
+        ausgeschaltet werden sollen."""
+        
+        byte = 0
+        if gruen_an:
+            byte += 1
+        if gelb_an:
+            byte += 2
+        if rot_an:
+            byte += 4
+
+        #print("Sende byte", byte)
+        self.client.sendto(bytes([byte]), (self.servername, self.serverport))
+
+
+# Main
+#
 if __name__ == "__main__":
     import sys
 
@@ -96,3 +134,30 @@ if __name__ == "__main__":
             print("Starte Server auf localhost auf Port 9999")
             easerver = EAModulServer("localhost", 9999)
             easerver.serve_forever()
+
+        elif sys.argv[1] == "startclient":
+            print("Starte Client")
+
+            hostname = input("Hostname (Enter für localhost):")
+            if hostname == '':
+                hostname = 'localhost'
+            port = input("Port (Enter für 9999):")
+            if port == '':
+                port = '9999'
+            client = EAModulClient(hostname, int(port))
+
+            print("Welche LEDs sollen angeschaltet werden?")
+            print("(0=aus, 1=an, erst rot, dann gelb, dann grün)")
+            print("Beispiel: 010 schaltet gelb an und rot und grün aus.")
+            print("'q' beendet das Programm")
+
+            eingabe = ''
+            while eingabe != 'q':
+                eingabe = input()
+                if len(eingabe) == 3:
+                    rot_an = eingabe[0] == "1"
+                    gelb_an = eingabe[1] == "1"
+                    gruen_an = eingabe[2] == "1"
+                    client.sende(rot_an, gelb_an, gruen_an)
+                else:
+                    print("Eingabe fehlerhaft, bitte wiederholen!")
