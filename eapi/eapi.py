@@ -53,8 +53,10 @@ class EAModul:
         """
         Schalte die LED mit der gegebenen Nummer ein (True) oder aus (False).
         """
+        # TODO: Anpassen, sodass auch Floatwerte erkannt werden, damit die
+        #       LED gedimmt werden kann.
         if 0 <= num < len(self.__leds):
-            return GPIO.output(self.__leds[num], an_aus)
+            GPIO.output(self.__leds[num], an_aus)
         else:
             raise Exception(
                 "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
