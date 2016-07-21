@@ -153,14 +153,15 @@ if __name__ == "__main__":
             print("Beispiel: 010 schaltet gelb an und rot und grün aus.")
             print("'q' beendet das Programm")
 
-            eingabe = ''
-            while eingabe != 'q':
+            while True:
                 eingabe = input()
                 if re.match("^[01]{3}$", eingabe): # Eingabe besteht aus drei 0 oder 1
                     rot_an = eingabe[0] == "1"
                     gelb_an = eingabe[1] == "1"
                     gruen_an = eingabe[2] == "1"
                     client.sende(rot_an, gelb_an, gruen_an)
+                elif eingabe == 'q':
+                    exit(0)
                 else:
                     print("Eingabe fehlerhaft. Erwarte genau drei Zeichen, nur 0 oder 1.")
                     print("Bitte wiederholen!")
