@@ -122,7 +122,7 @@ if __name__ == "__main__":
         for i in range(100):
             ea_modul.schalte_led(EAModul.LED_ROT, i/100)
             ea_modul.schalte_led(EAModul.LED_GELB, i/100)
-            ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, i/100)
             time.sleep(0.05)
         for i in range(100):
             ea_modul.schalte_led(EAModul.LED_ROT, 1-i/100)
