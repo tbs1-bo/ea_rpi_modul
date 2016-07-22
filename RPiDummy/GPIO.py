@@ -13,6 +13,20 @@ log = logging.getLogger(__name__)
 
 __PINS = {}
 
+class PWM:
+    def __init__(self, pin, frequenz):
+        log.debug("PWM für pin {p} mit Frequenz {f}".format(p=pin, f=frequenz))
+
+    def stop(self):
+        log.debug("Stoppe PWM")
+
+    def start(self, frequenz):
+        log.debug("Starte PWM mit Frequenz " + str(frequenz))
+
+    def ChangeDutyCycle(self, frequenz):
+        log.debug("Ändere DutyCycly auf Frequenz " + str(frequenz))
+    
+
 def __alle_pins_ausgeben():
     s = "PIN-BELEGUNGEN: "
     for p in __PINS:        

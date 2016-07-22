@@ -35,6 +35,16 @@ class EAModul:
         self.__leds = [pin_led0, pin_led1, pin_led2]
         GPIO.setup(self.__leds, GPIO.OUT)
 
+        # Für jede LED wird ein PWM bereitgestellt, ueber den die LED 
+        # gedimmt werden kann
+        self.__pwms = [
+            GPIO.PWM(pin_led0, 100),
+            GPIO.PWM(pin_led1, 100),
+            GPIO.PWM(pin_led2, 100)
+            ]
+
+
+
 
     def taster_gedrueckt(self, num=0):
         """
@@ -50,17 +60,32 @@ class EAModul:
 
 
     def schalte_led(self, num=0, an_aus=True):
-        """
-        Schalte die LED mit der gegebenen Nummer ein (True) oder aus (False).
-        """
-        # TODO: Anpassen, sodass auch Floatwerte erkannt werden, damit die
-        #       LED gedimmt werden kann.
+        """Schalte die LED mit der gegebenen Nummer ein (True, 1) oder aus (False, 0).
+
+        Wenn für an_aus eine Kommazahl zwischen 0 und 1 angegeben
+        wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
+        LED nur mit halber Kraft leuchten."""
+
         if 0 <= num < len(self.__leds):
-            GPIO.output(self.__leds[num], an_aus)
+            if isinstance(an_aus, int) or isinstance(an_aus, bool):
+                # LED ein oder ausschalten
+                self.__pwms[num].stop()
+                GPIO.output(self.__leds[num], an_aus)
+
+            elif isinstance(an_aus, float) and 0 <= an_aus <= 1:
+                # LED dimmen
+                pwm = self.__pwms[num]
+                pwm.start(0)
+                pwm.ChangeDutyCycle(an_aus*100)
+
+            else:
+                raise Exception(
+                    "Wert für an_aus muss zwischen 0 und 1 liegen oder bool sein.")
         else:
             raise Exception(
                 "Falsche LED-Nummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self.__leds)-1))
+
 
     def taster_event_registrieren(self, taster_nr, methode):
         """Registriere eine Methode, die bei Betätigung ausgeführt wird.
