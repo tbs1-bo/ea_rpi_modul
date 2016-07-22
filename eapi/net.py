@@ -132,21 +132,21 @@ if __name__ == "__main__":
     import re
 
     if len(sys.argv) >= 2:
-        hostname = input("Hostname (Enter für localhost):")
-        if hostname == '':
-            hostname = 'localhost'
-        port = input("Port (Enter für 9999):")
-        if port == '':
-            port = '9999'
+        __hostname = input("Hostname (Enter für localhost):")
+        if __hostname == '':
+            __hostname = 'localhost'
+        __port = input("Port (Enter für 9999):")
+        if __port == '':
+            __port = '9999'
 
         if sys.argv[1] == "startserver":
-            print("Starte Server auf", hostname, "auf Port", port)
-            easerver = EAModulServer(hostname, int(port))
-            easerver.serve_forever()
+            print("Starte Server auf", __hostname, "auf Port", __port)
+            __easerver = EAModulServer(__hostname, int(__port))
+            __easerver.serve_forever()
 
         elif sys.argv[1] == "startclient":
             print("Starte Client")
-            client = EAModulClient(hostname, int(port))
+            __client = EAModulClient(__hostname, int(__port))
 
             print("Welche LEDs sollen angeschaltet werden?")
             print("(0=aus, 1=an, erst rot, dann gelb, dann grün)")
@@ -154,13 +154,13 @@ if __name__ == "__main__":
             print("'q' beendet das Programm")
 
             while True:
-                eingabe = input()
-                if re.match("^[01]{3}$", eingabe): # Eingabe besteht aus drei 0 oder 1
-                    rot_an = eingabe[0] == "1"
-                    gelb_an = eingabe[1] == "1"
-                    gruen_an = eingabe[2] == "1"
-                    client.sende(rot_an, gelb_an, gruen_an)
-                elif eingabe == 'q':
+                __eingabe = input()
+                if re.match("^[01]{3}$", __eingabe): # Eingabe besteht aus drei 0 oder 1
+                    __rot_an = eingabe[0] == "1"
+                    __gelb_an = eingabe[1] == "1"
+                    __gruen_an = eingabe[2] == "1"
+                    __client.sende(__rot_an, __gelb_an, __gruen_an)
+                elif __eingabe == 'q':
                     exit(0)
                 else:
                     print("Eingabe fehlerhaft. Erwarte genau drei Zeichen, nur 0 oder 1.")

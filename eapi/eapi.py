@@ -115,24 +115,24 @@ class EAModul:
 if __name__ == "__main__":
     import time
 
-    command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
-    if command == "demo_dimmen":        
+    __command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
+    if __command == "demo_dimmen":        
         input("Alle LEDs werden 0.0 auf 1.0 gedimmt und dann von 1.0 auf 0.0 (Enter)")
-        ea_modul = EAModul()
+        __ea_modul = EAModul()
         for i in range(100):
-            ea_modul.schalte_led(EAModul.LED_ROT, i/100)
-            ea_modul.schalte_led(EAModul.LED_GELB, i/100)
-            ea_modul.schalte_led(EAModul.LED_GRUEN, i/100)
+            __ea_modul.schalte_led(EAModul.LED_ROT, i/100)
+            __ea_modul.schalte_led(EAModul.LED_GELB, i/100)
+            __ea_modul.schalte_led(EAModul.LED_GRUEN, i/100)
             time.sleep(0.05)
         for i in range(100):
-            ea_modul.schalte_led(EAModul.LED_ROT, 1-i/100)
-            ea_modul.schalte_led(EAModul.LED_GELB, 1-i/100)
-            ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
+            __ea_modul.schalte_led(EAModul.LED_ROT, 1-i/100)
+            __ea_modul.schalte_led(EAModul.LED_GELB, 1-i/100)
+            __ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
             time.sleep(0.05)
 
-        ea_modul.cleanup()
+        __ea_modul.cleanup()
 
-    elif command == "demo_led_taster":
+    elif __command == "demo_led_taster":
         input(
             """
             Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über den einen 
@@ -141,26 +141,26 @@ if __name__ == "__main__":
             (Enter)
             """)
 
-        ea_modul = EAModul()
-        def taster0_gedrueckt(pin):
-            global ea_modul
-            ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+        __ea_modul = EAModul()
+        def __taster0_gedrueckt(pin):
+            global __ea_modul
+            __ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
 
-        ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
+        __ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
 
         try:
-            while not ea_modul.taster_gedrueckt(1):
-                ea_modul.schalte_led(EAModul.LED_ROT, True)
+            while not __ea_modul.taster_gedrueckt(1):
+                __ea_modul.schalte_led(EAModul.LED_ROT, True)
                 time.sleep(0.2)
-                ea_modul.schalte_led(EAModul.LED_ROT, False)
+                __ea_modul.schalte_led(EAModul.LED_ROT, False)
                 time.sleep(0.2)
 
-                ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+                __ea_modul.schalte_led(EAModul.LED_GRUEN, True)
                 time.sleep(0.5)
-                ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+                __ea_modul.schalte_led(EAModul.LED_GRUEN, False)
                 time.sleep(0.2)
 
         except KeyboardInterrupt:
-            ea_modul.cleanup()
+            __ea_modul.cleanup()
         finally:
-            ea_modul.cleanup()
+            __ea_modul.cleanup()
