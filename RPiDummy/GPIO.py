@@ -24,7 +24,7 @@ class PWM:
         log.debug("Starte PWM mit Frequenz " + str(frequenz))
 
     def ChangeDutyCycle(self, frequenz):
-        log.debug("Ändere DutyCycly auf Frequenz " + str(frequenz))
+        log.debug("Ändere DutyCycle auf Frequenz " + str(frequenz))
     
 
 def __alle_pins_ausgeben():

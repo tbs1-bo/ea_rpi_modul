@@ -1,6 +1,13 @@
 """Ein Modul für die Verwendung des Eingabe-Ausgabe-Moduls für den Raspberry
 Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
-ist."""
+ist.
+
+Es existieren verschiedene Demos, die von der Kommandozeile aus aufgerufen
+werden können:
+
+  $ python3 -m eapi.api
+
+"""
 
 
 # Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird 
@@ -104,3 +111,53 @@ class EAModul:
         """Setzt alle Pins des Pi wieder in den Ausgangszustand."""
         GPIO.cleanup()
 
+
+if __name__ == "__main__":
+    import time
+
+    command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
+    if command == "demo_dimmen":        
+        input("Alle LEDs werden 0.0 auf 1.0 gedimmt und dann von 1.0 auf 0.0 (Enter)")
+        ea_modul = EAModul()
+        for i in range(100):
+            ea_modul.schalte_led(EAModul.LED_ROT, i/100)
+            ea_modul.schalte_led(EAModul.LED_GELB, i/100)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
+            time.sleep(0.05)
+        for i in range(100):
+            ea_modul.schalte_led(EAModul.LED_ROT, 1-i/100)
+            ea_modul.schalte_led(EAModul.LED_GELB, 1-i/100)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
+            time.sleep(0.05)
+
+    elif command == "demo_led_taster":
+        input(
+            """
+            Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über den einen 
+            Taster die gelbe LED an- und ausgeschaltet werden. Der andere Taster beendet
+            das Programm, wenn er länger gedrückt wird.
+            """)
+
+        ea_modul = EAModul()
+        def taster0_gedrueckt(pin):
+            global ea_modul
+            ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+
+        ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
+
+        try:
+            while not ea_modul.taster_gedrueckt(1):
+                ea_modul.schalte_led(EAModul.LED_ROT, True)
+                time.sleep(0.2)
+                ea_modul.schalte_led(EAModul.LED_ROT, False)
+                time.sleep(0.2)
+
+                ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+                time.sleep(0.5)
+                ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+                time.sleep(0.2)
+
+        except KeyboardInterrupt:
+            ea_modul.cleanup()
+        finally:
+            ea_modul.cleanup()
