@@ -130,12 +130,15 @@ if __name__ == "__main__":
             ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
             time.sleep(0.05)
 
+        ea_modul.cleanup()
+
     elif command == "demo_led_taster":
         input(
             """
             Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über den einen 
             Taster die gelbe LED an- und ausgeschaltet werden. Der andere Taster beendet
             das Programm, wenn er länger gedrückt wird.
+            (Enter)
             """)
 
         ea_modul = EAModul()
