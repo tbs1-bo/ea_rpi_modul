@@ -102,17 +102,19 @@ class EAModulClient:
         self.client = socket.socket(socket.AF_INET, # Address Family Internet
                                     socket.SOCK_DGRAM) # UDP
 
-    def sende(self, rot_an, gelb_an, gruen_an):
+    def sende(self, rot, gelb, gruen):
         """Sende an den Server die Information, welche LEDs an- bzw. 
-        ausgeschaltet werden sollen."""
+        ausgeschaltet werden sollen.
+
+        Die Werte für rot, gelb und grün müssen zwischen 0 und 100 liegen."""
         
-        data = [0,0,0]
-        if gruen_an:
-            data[0] = 100
-        if gelb_an:
-            data[1] = 100
-        if rot_an:
-            data[2] = 100
+        data = [255,255,255]
+        if 0 <= rot <= 100:
+            data[0] = rot
+        if 0 <= gelb <= 100:
+            data[1] = gelb
+        if 0 <= gruen <= 100:
+            data[2] = gruen
 
         #print("Sende bytes", data)
         self.client.sendto(bytes(data), (self.servername, self.serverport))
@@ -141,22 +143,27 @@ if __name__ == "__main__":
             print("Starte Client")
             __client = EAModulClient(__hostname, int(__port))
 
-            print("Welche LEDs sollen angeschaltet werden?")
-            print("(0=aus, 1=an, erst rot, dann gelb, dann grün)")
-            print("Beispiel: 010 schaltet gelb an und rot und grün aus.")
-            print("'q' beendet das Programm")
+            print("""
+            Welche LEDs sollen angeschaltet werden? Gib drei Werte zwischen 
+            0 und 100 ein (getrennt durch Leerzeichen: erst rot, dann gelb, 
+            dann grün)
+            Beispiel: 65 100 0 schaltet gelb an, grün aus, rot leuchtet mit 
+            halber Helligkeit.
+            'q' beendet das Programm""")
 
             while True:
-                __eingabe = input()
-                if re.match("^[01]{3}$", __eingabe): # Eingabe besteht aus drei 0 oder 1
-                    __rot_an = __eingabe[0] == "1"
-                    __gelb_an = __eingabe[1] == "1"
-                    __gruen_an = __eingabe[2] == "1"
-                    __client.sende(__rot_an, __gelb_an, __gruen_an)
-                elif __eingabe == 'q':
+                __eingabe = input()                    
+                if __eingabe == 'q':
                     exit(0)
-                else:
-                    print("Eingabe fehlerhaft. Erwarte genau drei Zeichen, nur 0 oder 1.")
+                try:
+                    __seingabe = __eingabe.split(' ')
+                    __rot = int(__seingabe[0])
+                    __gelb = int(__seingabe[1])
+                    __gruen = int(__seingabe[2])
+                    __client.sende(__rot, __gelb, __gruen)
+                except:
+                    print("Eingabe fehlerhaft. Erwarte genau drei Zahlen zwischen 0 und 100.")
                     print("Bitte wiederholen!")
+                    
     else:
         print("Befehl angeben: startserver oder startclient")
