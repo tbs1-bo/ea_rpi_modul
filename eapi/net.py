@@ -14,34 +14,25 @@ gestartet werden.
   $ python3 -m eapi.net startserver
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
-gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
-werden ignoriert. Die letzen drei Bit (0 oder 1) des gesendeten Bytes, werden
-als Werte für die rote, gelbe und grüne LED interpretiert:
+gesendeter Request besteht aus genau drei Bytes - für jede LED ein Byte: erst
+rot, dann gelb zuletzt grün. Der Wert des Bytes gibt in Prozent (0-100) die
+Helligkeit der LED an. Werte außerhalb dieses Bereiches werden ignoriert.
 
-  ? ? ? ? ? 0 1 0
-            ^ ^ ^
-            | | |
-            | | grün
-            | gelb
-            rot
-
-Die Bitsequenz ?????010 (? bedeutet 'beliebig') schaltet die gelbe LED an und
-die rote und grüne LED aus.
-
-Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
+Mit Netcat und echo können drei Bytes einfach an einen Testserver wie folgt
 gesendet werden:
 
-  $ echo -en '\\x02' | nc -4u localhost 9999
+  $ echo -en '\\x02\\x64\\x00' | nc -4u localhost 9999
 
-Hex 2 (\\x02) entspricht der Bitfolge 00000010. Mit der Option -e wird eine
+Hex 2 (\\x02) entspricht dem Hexwert 2. Mit der Option -e wird eine
 Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
-gesendet werden soll - also nur das eine Byte. Die Option -4 von nc sendet ein
-IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
+gesendet werden soll - also nur die angegebenen Bytes. Die Option -4 von nc
+sendet ein IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
 
 Das Modul enthält auch einen einfachen Konsolenclient, der über die Konsole
 gestartet werden kann:
 
   $ python3 -m eapi.net startclient
+
 """
 
 import socket
@@ -59,18 +50,20 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
 
         # Der Request besteht aus einem Tupel aus Daten und Socket des
         # Senders. Wir greifen die Daten heraus.
-        #
         data = self.request[0]
 
-        # Erwarte mindestens ein Byte im Request
-        if len(data) < 1:
+        # Erwarte mindestens drei Bytes im Request
+        # Für jede LED ein Byte (rot, gelb, grün)
+        if len(data) < 3:
             return
 
-        byte = int(data[0])
-        print("Byte empfangen:", byte)
-        self.eamodul.schalte_led(EAModul.LED_ROT, byte & 1 == 1)
-        self.eamodul.schalte_led(EAModul.LED_GELB, byte & 2 == 2)
-        self.eamodul.schalte_led(EAModul.LED_GRUEN, byte & 4 == 4)
+        #print("Bytes empfangen:", data)
+        if 0 <= data[0] <= 100:
+            self.eamodul.schalte_led(EAModul.LED_ROT, data[0]/100)
+        if 0 <= data[1] <= 100:
+            self.eamodul.schalte_led(EAModul.LED_GELB, data[1]/100)
+        if 0 <= data[2] <= 100:
+            self.eamodul.schalte_led(EAModul.LED_GRUEN, data[2]/100)
 
 
 class EAModulServer(socketserver.UDPServer):
@@ -113,16 +106,16 @@ class EAModulClient:
         """Sende an den Server die Information, welche LEDs an- bzw. 
         ausgeschaltet werden sollen."""
         
-        byte = 0
+        data = [0,0,0]
         if gruen_an:
-            byte += 1
+            data[0] = 100
         if gelb_an:
-            byte += 2
+            data[1] = 100
         if rot_an:
-            byte += 4
+            data[2] = 100
 
-        #print("Sende byte", byte)
-        self.client.sendto(bytes([byte]), (self.servername, self.serverport))
+        #print("Sende bytes", data)
+        self.client.sendto(bytes(data), (self.servername, self.serverport))
 
 
 # Main
@@ -156,9 +149,9 @@ if __name__ == "__main__":
             while True:
                 __eingabe = input()
                 if re.match("^[01]{3}$", __eingabe): # Eingabe besteht aus drei 0 oder 1
-                    __rot_an = eingabe[0] == "1"
-                    __gelb_an = eingabe[1] == "1"
-                    __gruen_an = eingabe[2] == "1"
+                    __rot_an = __eingabe[0] == "1"
+                    __gelb_an = __eingabe[1] == "1"
+                    __gruen_an = __eingabe[2] == "1"
                     __client.sende(__rot_an, __gelb_an, __gruen_an)
                 elif __eingabe == 'q':
                     exit(0)
