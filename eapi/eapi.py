@@ -26,7 +26,7 @@ class EAModul:
     LED_GELB = 1
     LED_GRUEN = 2
 
-    def __init__(self, pin_taster0=29, pin_taster1=31, pin_led0=33, pin_led1=35, pin_led2=37):
+    def __init__(self, pin_taster0=29, pin_taster1=31, pin_led_rot=33, pin_led_gelb=35, pin_led_gruen=37):
         """
         Die PINs des Moduls werden konfiguriert.
 
@@ -39,18 +39,16 @@ class EAModul:
         self.__taster = [pin_taster0, pin_taster1]
         GPIO.setup(self.__taster, GPIO.IN)
 
-        self.__leds = [pin_led0, pin_led1, pin_led2]
+        self.__leds = [pin_led_rot, pin_led_gelb, pin_led_gruen]
         GPIO.setup(self.__leds, GPIO.OUT)
 
         # Für jede LED wird ein PWM bereitgestellt, ueber den die LED 
         # gedimmt werden kann
         self.__pwms = [
-            GPIO.PWM(pin_led0, 100),
-            GPIO.PWM(pin_led1, 100),
-            GPIO.PWM(pin_led2, 100)
+            GPIO.PWM(pin_led_rot, 100),
+            GPIO.PWM(pin_led_gelb, 100),
+            GPIO.PWM(pin_led_gruen, 100)
             ]
-
-
 
 
     def taster_gedrueckt(self, num=0):
@@ -66,8 +64,10 @@ class EAModul:
                     ln=len(self.__taster)-1))
 
 
-    def schalte_led(self, num=0, an_aus=True):
+    def schalte_led(self, num, an_aus):
         """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
+
+        Der Wert für num ist LED_ROT, LED_GELB oder LED_GRUEN.
 
         Wenn für an_aus eine Kommazahl zwischen 0 und 1 angegeben
         wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         __ea_modul = EAModul()
         def __taster0_gedrueckt(pin):
             global __ea_modul
-            __ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+            __ea_modul.schalte_led(EAModul.LED_GELB, __ea_modul.taster_gedrueckt(0))
 
         __ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
 
