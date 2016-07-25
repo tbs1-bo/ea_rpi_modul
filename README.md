@@ -47,16 +47,16 @@ Klasse EAModul
 Mit Hilfe der Klasse `EAModul` können die Taster und LED einfach angesteuert
 bzw. ausgelesen werden.
 
-    from eapi.eapi import EAModul     #0
+    from eapi.eapi import EAModul           #0
 
-    ea = EAModul(29, 31, 33, 35, 37)  #1
-    ea.schalte_led(0, True)           #2
-    ea.schalte_led(0, False)          #3
+    ea = EAModul(29, 31, 33, 35, 37)    #1
+    ea.schalte_led(EAModul.LED_ROT, 1)  #2
+    ea.schalte_led(EAModul.LED_ROT, 0)  #3
     
-    if ea.taster_gedrueckt(0):        #4
+    if ea.taster_gedrueckt(0):          #4
         print("Taster 0 gedrückt")
         
-    ea.cleanup()                      #5
+    ea.cleanup()                        #5
 
 **#0** Aus dem Modul `eapi.eapi` wird die Klasse `EAModul` importiert.
 
@@ -64,9 +64,7 @@ bzw. ausgelesen werden.
 angegeben werden: zuerst die beiden Pins für die Taster, es folgen drei
 Pins für die LED.
 
-**#2 und #3** Die LED sind durchnummeriert (beginnend bei 0) und können ein
-oder ausgeschaltet werden. Hier wird die LED mit der Nummer 0 erst ein- und
-dann wieder ausgeschaltet.
+**#2 und #3** Hier wird die rote LED erst ein- und dann wieder ausgeschaltet.
 
 **#4** Der Zustand des Tasters mit der Nummer 0 wird abgefragt. Die Taster
 sind nummeriert (beginnend bei 0).
@@ -96,14 +94,14 @@ Loslassen des Tasters wieder ausgeschaltet werden.
 
     try:
         while not ea_modul.taster_gedrueckt(1):              #4
-	        ea_modul.schalte_led(EAModul.LED_ROT, True)
+	        ea_modul.schalte_led(EAModul.LED_ROT, 1)
             time.sleep(0.2)
-		    ea_modul.schalte_led(EAModul.LED_ROT, False)
+		    ea_modul.schalte_led(EAModul.LED_ROT, 0)
             time.sleep(0.2)
 
-            ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
             time.sleep(0.5)
-		    ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+		    ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
             time.sleep(0.2)
 
     except KeyboardInterrupt:
