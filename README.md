@@ -17,6 +17,21 @@ Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
 entfallen.
 
 
+Installation aus den Quellen
+----------------------------
+
+Wer immer die aktuellen Quellen nutzen möchte, kann das github Repository
+auschecken und darüber das Paket selbst installieren.
+
+    $ git clone https://github.com/pintman/ea_rpi_modul.git
+    $ cd ea_rpi_modul
+    $ python3 setup.py install
+
+Wenn das Paket nur für den aktuellen Benutzer installiert werden soll, muss
+die Option `--user` an `install` übergeben werden. Bei einer systemweiten
+Installation muss der letzte Befehl mit `sudo` ausgeführt werden.
+
+
 Upgrade
 -------
 
