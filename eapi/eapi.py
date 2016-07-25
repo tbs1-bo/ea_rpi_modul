@@ -13,7 +13,7 @@ werden können:
 # Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird 
 # ein Dummy verwendet.
 try:
-    import RPi.GPIO as GPIO
+    import eapi.GPIODummy as GPIO
 except ImportError:
     import RPiDummy.GPIO as GPIO
     print("!! Es wird eine Dummy Klasse für GPIO-PINs wird verwendet!!")
