@@ -20,8 +20,13 @@ entfallen.
 Installation aus den Quellen
 ----------------------------
 
-Wer immer die aktuellen Quellen nutzen möchte, kann das github Repository
-auschecken und darüber das Paket selbst installieren.
+Die Quelltexte für das Paket liegen bei github und können auch direkt von dort
+installiert werden:
+
+    $ pip3 install git+https://github.com/pintman/ea_rpi_modul
+
+Wer mit den Quelltexten arbeiten möchte, sollte das repository auschecken und
+darüber das Paket selbst installieren.
 
     $ git clone https://github.com/pintman/ea_rpi_modul.git
     $ cd ea_rpi_modul
