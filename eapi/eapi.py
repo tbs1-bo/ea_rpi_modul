@@ -54,7 +54,17 @@ class EAModul:
     def taster_gedrueckt(self, num=0):
         """
         Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den
-        Wert zurück.
+        Wert zurück. Eine einfache Verwendung könnte wie folgt aussehen:
+
+          from eapi.eapi import EAModul
+          import time
+
+          ea_modul = EAModul()
+          while not ea_modul.taster_gedrueckt(1):
+            ea_modul.schalte_led(EAModul.LED_ROT, 1)
+            time.sleep(0.2)
+            ea_modul.schalte_led(EAModul.LED_ROT, 0)
+
         """
         if 0 <= num < len(self.__taster):
             return GPIO.input(self.__taster[num])
@@ -71,7 +81,17 @@ class EAModul:
 
         Wenn für an_aus eine Kommazahl zwischen 0 und 1 angegeben
         wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
-        LED nur mit halber Kraft leuchten."""
+        LED nur mit halber Kraft leuchten.
+
+        Eine einfache Verwendung könnte wie folgt aussehen:
+
+          from eapi.eapi import EAModul
+
+          ea_modul = EAModul()
+          ea_modul.schalte_led(EAModul.LED_ROT, 1)
+          ea_modul.schalte_led(EAModul.LED_GELB, 0)
+          ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
+        """
 
         if 0 <= led_farbe < len(self.__leds):
             if an_aus == 1 or an_aus == 0:
@@ -97,8 +117,17 @@ class EAModul:
         """Registriere eine Methode, die bei Betätigung ausgeführt wird.
 
         Die übergebene Methode muss ein Argument haben und wird mit der
-        Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt
-        oder losgelassen wird."""
+        Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt oder
+        losgelassen wird. Eine einfache Verwendung könnte wie folgt aussehen:
+
+          from eapi.eapi import EAModul
+
+          def taster0_gedrueckt(pin):
+            print("Taster 0 wurde gedrückt.")
+
+          ea_modul = EAModul()
+          ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
+        """
         if taster_nr < 0 or taster_nr >= len(self.__taster):
             raise Exception("Falsche Taster Nummer." + taster_nr)
 
@@ -149,14 +178,14 @@ if __name__ == "__main__":
 
         try:
             while not __ea_modul.taster_gedrueckt(1):
-                __ea_modul.schalte_led(EAModul.LED_ROT, True)
+                __ea_modul.schalte_led(EAModul.LED_ROT, 1)
                 time.sleep(0.2)
-                __ea_modul.schalte_led(EAModul.LED_ROT, False)
+                __ea_modul.schalte_led(EAModul.LED_ROT, 0)
                 time.sleep(0.2)
 
-                __ea_modul.schalte_led(EAModul.LED_GRUEN, True)
+                __ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
                 time.sleep(0.5)
-                __ea_modul.schalte_led(EAModul.LED_GRUEN, False)
+                __ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
                 time.sleep(0.2)
 
         except KeyboardInterrupt:
