@@ -14,7 +14,7 @@ installiert werden. Wenn die Installation nur lokal für einen User erfolgen
 soll, heißt der Befehl `pip3 install --user eapi`.
 
 Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
-entfallen.
+ohne `sudo` ausgeführt werden.
 
 
 Installation aus den Quellen
