@@ -139,6 +139,9 @@ anzeigen lassen. Auf der Kommandozeile hilft der Befehl `pydoc3` weiter. Mit
 `pydoc3 eapi.eapi` oder `python3 -m pydoc eapi.eapi` wird die Dokumentation
 für das Modul angezeigt. 
 
+Eine HTML-Version der Dokumentation kann unter der Adresse
+http://pythonhosted.org/eapi/ abgerufen werden.
+
 
 Verwendung ohne Raspberry Pi
 ============================
