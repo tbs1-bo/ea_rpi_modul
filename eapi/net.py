@@ -115,16 +115,18 @@ class EAModulClient:
         """
         self.servername = servername
         self.serverport = serverport
-        self.client = socket.socket(socket.AF_INET, # Address Family Internet
-                                    socket.SOCK_DGRAM) # UDP
+        self.client = socket.socket(socket.AF_INET,  # Address Family Internet
+                                    socket.SOCK_DGRAM)  # UDP
 
     def sende(self, rot, gelb, gruen):
         """Sende an den Server die Information, welche LEDs an- bzw. 
         ausgeschaltet werden sollen.
 
-        Die Werte für rot, gelb und grün müssen zwischen 0 und 100 liegen."""
-        
-        data = [255,255,255]
+        Die Werte für rot, gelb und grün müssen zwischen 0 und 100 liegen.
+        """
+
+        # Standardwerte auf 255 festelgen -> werden ignoriert.
+        data = [255, 255, 255]
         if 0 <= rot <= 100:
             data[0] = rot
         if 0 <= gelb <= 100:
