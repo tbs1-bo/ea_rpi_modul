@@ -16,7 +16,7 @@ try:
     import RPi.GPIO as GPIO
 except ImportError:
     import eapi.GPIODummy as GPIO
-    print("!! Es wird eine Dummy Klasse für GPIO-PINs wird verwendet!!")
+
 
 class EAModul:
     """Die Klasse EAModul hilft bei der Ansteuerung eines Eingabe-Ausgabe-Moduls
@@ -33,6 +33,9 @@ class EAModul:
         Pins der LED werden als Ausgänge, und Pins der Taster als Eingänge
         konfiguriert. Wenn keine PINS angegeben werden, werden die PINs
         oberhalb des GND Pins links unten verwendet.
+
+        >>> from eapi.hw import EAModul
+        >>> ea = EAModul()
         """
         GPIO.setmode(GPIO.BOARD)
 
@@ -56,14 +59,14 @@ class EAModul:
         Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den
         Wert zurück. Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.hw import EAModul
-          import time
+        >>> from eapi.hw import EAModul
+        >>> import time
 
-          ea_modul = EAModul()
-          while not ea_modul.taster_gedrueckt(1):
-            ea_modul.schalte_led(EAModul.LED_ROT, 1)
-            time.sleep(0.2)
-            ea_modul.schalte_led(EAModul.LED_ROT, 0)
+        >>> ea_modul = EAModul()
+        >>> while not ea_modul.taster_gedrueckt(1):
+        ...   ea_modul.schalte_led(EAModul.LED_ROT, 1)
+        ...   time.sleep(0.2)
+        ...   ea_modul.schalte_led(EAModul.LED_ROT, 0)
 
         """
         if 0 <= num < len(self.__taster):
@@ -85,12 +88,12 @@ class EAModul:
 
         Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.hw import EAModul
+        >>> from eapi.hw import EAModul
 
-          ea_modul = EAModul()
-          ea_modul.schalte_led(EAModul.LED_ROT, 1)
-          ea_modul.schalte_led(EAModul.LED_GELB, 0)
-          ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
+        >>> ea_modul = EAModul()
+        >>> ea_modul.schalte_led(EAModul.LED_ROT, 1)
+        >>> ea_modul.schalte_led(EAModul.LED_GELB, 0)
+        >>> ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
         """
 
         if 0 <= led_farbe < len(self.__leds):
@@ -120,13 +123,13 @@ class EAModul:
         Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt oder
         losgelassen wird. Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.hw import EAModul
+        >>> from eapi.hw import EAModul
 
-          def taster0_gedrueckt(pin):
-            print("Taster 0 wurde gedrückt.")
+        >>> def taster0_gedrueckt(pin):
+        ...  print("Taster 0 wurde gedrückt.")
 
-          ea_modul = EAModul()
-          ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
+        >>> ea_modul = EAModul()
+        >>> ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
         """
         if taster_nr < 0 or taster_nr >= len(self.__taster):
             raise Exception("Falsche Taster Nummer." + taster_nr)
@@ -136,7 +139,12 @@ class EAModul:
 
 
     def cleanup(self):
-        """Setzt alle Pins des Pi wieder in den Ausgangszustand."""
+        """Setzt alle Pins des Pi wieder in den Ausgangszustand.
+
+        >>> from eapi.hw import EAModul
+        >>> ea = EAModul()
+        >>> ea.cleanup()
+        """
         GPIO.cleanup()
 
 
@@ -170,6 +178,7 @@ if __name__ == "__main__":
             """)
 
         __ea_modul = EAModul()
+
         def __taster0_gedrueckt(pin):
             global __ea_modul
             __ea_modul.schalte_led(EAModul.LED_GELB, __ea_modul.taster_gedrueckt(0))

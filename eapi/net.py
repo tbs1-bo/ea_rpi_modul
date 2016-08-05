@@ -39,6 +39,7 @@ import socket
 import socketserver
 from eapi.hw import EAModul
 
+
 class EAModulUDPHandler(socketserver.BaseRequestHandler):
     """Ein Handler für UDP requests an den EAModulServer."""
 
@@ -57,7 +58,6 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
         if len(data) < 3:
             return
 
-        #print("Bytes empfangen:", data)
         if 0 <= data[0] <= 100:
             self.eamodul.schalte_led(EAModul.LED_ROT, data[0]/100)
         if 0 <= data[1] <= 100:
@@ -87,7 +87,12 @@ class EAModulServer(socketserver.UDPServer):
             EAModulUDPHandler.eamodul = eamodul
 
 class EAModulClient:
-    """Client, um von der Konsole aus auf den EAModulServer zuzugreifen."""
+    """Client, um auf den EAModulServer zuzugreifen.
+
+    >>> client = EAModulClient('localhost', 9999)
+    >>> client.sende(100, 0, 100)
+    >>> client.sende(50, 0, 30)
+    """
 
     def __init__(self, servername, serverport):
         """Starte den Client für einen laufenden Server.
@@ -116,7 +121,6 @@ class EAModulClient:
         if 0 <= gruen <= 100:
             data[2] = gruen
 
-        #print("Sende bytes", data)
         self.client.sendto(bytes(data), (self.servername, self.serverport))
 
 
@@ -124,7 +128,6 @@ class EAModulClient:
 #
 if __name__ == "__main__":
     import sys
-    import re
 
     if len(sys.argv) >= 2:
         __hostname = input("Hostname (Enter für localhost):")
@@ -161,7 +164,8 @@ if __name__ == "__main__":
                     __gelb = int(__seingabe[1])
                     __gruen = int(__seingabe[2])
                     __client.sende(__rot, __gelb, __gruen)
-                except:
+
+                except IndexError:
                     print("Eingabe fehlerhaft. Erwarte genau drei Zahlen zwischen 0 und 100.")
                     print("Bitte wiederholen!")
                     
