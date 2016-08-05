@@ -15,7 +15,7 @@ setuptools.setup(
     author="Marco Bakera",
     author_email="pintman@bakera.de",
     packages=setuptools.find_packages(),
-    classifiers=[ # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[  # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 4 - Beta",
         "Intended Audience :: Education",
         "Natural Language :: German",
@@ -37,11 +37,11 @@ setuptools.setup(
 # Damit der Upload klappt, muss eine Datei ~/.pypirc mit Zugangsdaten für ein
 # Account bei PyPi vorhanden sein. Der Inhalt der Datei könnte wie folgt aussehen:
 #
-#[distutils]
-#index-servers=pypi
+# [distutils]
+# index-servers=pypi
 #
-#[pypi]
-#repository = https://upload.pypi.io/legacy/
-#username = mein_username
-#password = mein_passwort
+# [pypi]
+# repository = https://upload.pypi.io/legacy/
+# username = mein_username
+# password = mein_passwort
 
