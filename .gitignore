@@ -90,3 +90,6 @@ ENV/
 
 # Editor Backup-Files
 *~
+
+# Pycharm Project directories
+.idea/
