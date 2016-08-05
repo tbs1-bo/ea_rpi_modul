@@ -5,7 +5,7 @@ ist.
 Es existieren verschiedene Demos, die von der Kommandozeile aus aufgerufen
 werden können:
 
-  $ python3 -m eapi.api
+  $ python3 -m eapi.hw
 
 """
 
@@ -56,7 +56,7 @@ class EAModul:
         Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den
         Wert zurück. Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.eapi import EAModul
+          from eapi.hw import EAModul
           import time
 
           ea_modul = EAModul()
@@ -85,7 +85,7 @@ class EAModul:
 
         Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.eapi import EAModul
+          from eapi.hw import EAModul
 
           ea_modul = EAModul()
           ea_modul.schalte_led(EAModul.LED_ROT, 1)
@@ -120,7 +120,7 @@ class EAModul:
         Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt oder
         losgelassen wird. Eine einfache Verwendung könnte wie folgt aussehen:
 
-          from eapi.eapi import EAModul
+          from eapi.hw import EAModul
 
           def taster0_gedrueckt(pin):
             print("Taster 0 wurde gedrückt.")

@@ -1,5 +1,5 @@
 import unittest
-from eapi.eapi import EAModul
+from eapi.hw import EAModul
 
 
 class EAModulTest(unittest.TestCase):

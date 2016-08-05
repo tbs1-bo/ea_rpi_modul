@@ -37,7 +37,7 @@ gestartet werden kann:
 
 import socket
 import socketserver
-from eapi.eapi import EAModul
+from eapi.hw import EAModul
 
 class EAModulUDPHandler(socketserver.BaseRequestHandler):
     """Ein Handler für UDP requests an den EAModulServer."""
