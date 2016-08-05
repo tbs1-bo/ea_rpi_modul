@@ -31,6 +31,9 @@ setuptools.setup(
 # Mit dem folgenden Befehl kann ein neues Release veröffentlicht werden
 # python3 setup.py sdist upload
 
+# Alternativ kann der Upload mit Twine erfolgen (empfohlen):
+# twine upload dist/*
+
 # Damit der Upload klappt, muss eine Datei ~/.pypirc mit Zugangsdaten für ein
 # Account bei PyPi vorhanden sein. Der Inhalt der Datei könnte wie folgt aussehen:
 #
