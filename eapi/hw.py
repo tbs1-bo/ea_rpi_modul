@@ -1,9 +1,9 @@
 """Ein Modul für die Verwendung des Eingabe-Ausgabe-Moduls für den Raspberry
-Pi. Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
-ist.
+Pi.
 
-Es existieren verschiedene Demos, die von der Kommandozeile aus aufgerufen
-werden können:
+Es besteht aus der Hauptklasse EAModul, die für die Ansteuerung vorgesehen
+ist. Hierfür existieren verschiedene Demos, die von der Kommandozeile aus
+aufgerufen werden können:
 
   $ python3 -m eapi.hw
 
@@ -35,6 +35,7 @@ class EAModul:
         oberhalb des GND Pins links unten verwendet.
 
         >>> from eapi.hw import EAModul
+
         >>> ea = EAModul()
         """
         GPIO.setmode(GPIO.BOARD)
@@ -76,7 +77,6 @@ class EAModul:
                 "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self.__taster)-1))
 
-
     def schalte_led(self, led_farbe, an_aus):
         """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
 
@@ -115,7 +115,6 @@ class EAModul:
         else:
             raise Exception("Falsche LED-Farbe.")
 
-
     def taster_event_registrieren(self, taster_nr, methode):
         """Registriere eine Methode, die bei Betätigung ausgeführt wird.
 
@@ -136,7 +135,6 @@ class EAModul:
 
         GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH)
         GPIO.add_event_callback(self.__taster[taster_nr], methode)
-
 
     def cleanup(self):
         """Setzt alle Pins des Pi wieder in den Ausgangszustand.

@@ -1,11 +1,13 @@
 """Ein Modul, das die Eingabe-Ausgabe-Module für den Raspberry Pi
 netzwerkfähig macht.
 
-Der Server kann mit folgenden Zeilen einfach gestartet werden:
+Der Server kann mit folgenden Zeilen einfach erstellt werden:
 
-  from eapi.net import EAModulServer
+>>> from eapi.net import EAModulServer
+>>> easerver = EAModulServer("localhost", 9999)
 
-  easerver = EAModulServer("localhost", 9999)
+Anschließend wird er mit einem Aufruf gestartet.
+
   easerver.serve_forever()
 
 Ebenso kann der Server über die Kommandozeile mit dem folgenden Befehl
