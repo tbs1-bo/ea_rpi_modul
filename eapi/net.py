@@ -88,10 +88,19 @@ class EAModulServer(socketserver.UDPServer):
         if eamodul:
             EAModulUDPHandler.eamodul = eamodul
 
+
 class EAModulClient:
     """Client, um auf den EAModulServer zuzugreifen.
 
+    Der Client kann mit der Angabe eines Hostnamens oder einer IP-Adresse
+    gestartet werden.
+
+    >>> from eapi.net import EAModulClient
     >>> client = EAModulClient('localhost', 9999)
+
+    Nun kann er über mit dem Server kommunizieren und die dortigen LEDs
+    ansteuern.
+
     >>> client.sende(100, 0, 100)
     >>> client.sende(50, 0, 30)
     """
