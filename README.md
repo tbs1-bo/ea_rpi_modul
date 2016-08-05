@@ -136,7 +136,7 @@ Hilfe erhalten
 Der Quelltext ist gut dokumentiert. Man kann sich die Hilfe der Klasse
 `EAModul` innerhalb des Python Interpreters mit dem Befehl `help(EAModul)`
 anzeigen lassen. Auf der Kommandozeile hilft der Befehl `pydoc3` weiter. Mit
-`pydoc3 eapi.hw` oder `python3 -m pydoc eapi.eapi` wird die Dokumentation
+`pydoc3 eapi.hw` oder `python3 -m pydoc eapi.hw` wird die Dokumentation
 für das Modul angezeigt. 
 
 Eine HTML-Version der Dokumentation kann unter der Adresse
