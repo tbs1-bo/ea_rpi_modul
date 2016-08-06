@@ -45,12 +45,17 @@ from eapi.hw import EAModul
 class EAModulUDPHandler(socketserver.BaseRequestHandler):
     """Ein Handler für UDP requests an den EAModulServer."""
 
-    def __init__(self):
-        self.eamodul = eamodul
+    # eamodul als Klassenattribut, da für jeden Request auf den Server
+    # eine neue Handlerinstanz erzeugt wird.
+    eamodul = None
 
     def handle(self):
         """Der UDP-Handler bearbeitet UDP-Requests gemäß der Modulbeschreibung 
         (s.o.)."""
+
+        # statisches Modul initaisieren, falls noch nicht geschehen
+        if EAModulUDPHandler.eamodul is None:
+            EAModulUDPHandler.eamodul = EAModul()
 
         # Der Request besteht aus einem Tupel aus Daten und Socket des
         # Senders. Wir greifen die Daten heraus.
@@ -62,11 +67,11 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
             return
 
         if 0 <= data[0] <= 100:
-            self.eamodul.schalte_led(EAModul.LED_ROT, data[0]/100)
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_ROT, data[0]/100)
         if 0 <= data[1] <= 100:
-            self.eamodul.schalte_led(EAModul.LED_GELB, data[1]/100)
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GELB, data[1]/100)
         if 0 <= data[2] <= 100:
-            self.eamodul.schalte_led(EAModul.LED_GRUEN, data[2]/100)
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GRUEN, data[2]/100)
 
 
 class EAModulServer(socketserver.UDPServer):
