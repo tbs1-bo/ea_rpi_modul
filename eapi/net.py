@@ -89,7 +89,7 @@ class EAModulServer(socketserver.UDPServer):
         kein Modul übergeben, wird ein Standardmodul selbst erstellt.
         """
 
-        super().__init__((host,port), EAModulUDPHandler)
+        super().__init__((host, port), EAModulUDPHandler)
 
         if eamodul:
             EAModulUDPHandler.eamodul = eamodul
@@ -121,7 +121,7 @@ class EAModulClient:
         """
         self.servername = servername
         self.serverport = serverport
-        self.client = socket.socket(socket.AF_INET,  # Address Family Internet
+        self.client = socket.socket(socket.AF_INET,     # Address Family Internet
                                     socket.SOCK_DGRAM)  # UDP
 
     def sende(self, rot, gelb, gruen):

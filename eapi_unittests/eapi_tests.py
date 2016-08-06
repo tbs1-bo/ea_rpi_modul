@@ -10,10 +10,8 @@ class EAModulTest(unittest.TestCase):
         self.ea.cleanup()
 
     def test_init(self):
-        ea = EAModul()
-        self.assertIsNotNone(ea)
-        ea = EAModul(29, 31, 33, 35, 37)
-        self.assertIsNotNone(ea)
+        self.ea = EAModul(29, 31, 33, 35, 37)
+        self.assertIsNotNone(self.ea)
 
         with self.assertRaises(Exception):
             EAModul(1, 2, 3, 4, 5, 6)
@@ -22,12 +20,13 @@ class EAModulTest(unittest.TestCase):
         for farbe in [EAModul.LED_ROT, EAModul.LED_GELB, EAModul.LED_GRUEN]:
             self.ea.schalte_led(farbe, 1)
             self.ea.schalte_led(farbe, 0)
+
             wert = 0.0
             while wert <= 1.0:
                 self.ea.schalte_led(farbe, wert)
                 wert += 0.1
             
-            with self.assertRaises(Exception):
+            with self.assertRaises(ValueError):
                 self.ea.schalte_led(1.1, 0)
             
     def test_taster_gedrueckt(self):
@@ -35,7 +34,7 @@ class EAModulTest(unittest.TestCase):
             b = self.ea.taster_gedrueckt(i)
             self.assertIsInstance(b, bool)
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             self.ea.taster_gedrueckt(2)
 
     def test_event_registrieren(self):

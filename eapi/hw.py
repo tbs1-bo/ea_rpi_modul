@@ -78,7 +78,7 @@ class EAModul:
             else:
                 return False
         else:
-            raise Exception(
+            raise ValueError(
                 "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self.__taster)-1))
 
@@ -109,9 +109,9 @@ class EAModul:
                 pwm.ChangeDutyCycle(helligkeit*100)
 
             else:
-                raise Exception("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
+                raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
         else:
-            raise Exception("Falsche LED-Farbe.")
+            raise ValueError("Falsche LED-Farbe.")
 
     def taster_event_registrieren(self, taster_nr, methode):
         """Registriere eine Methode, die bei Betätigung ausgeführt wird.
@@ -130,7 +130,7 @@ class EAModul:
         >>> ea_modul.cleanup()
         """
         if taster_nr < 0 or taster_nr >= len(self.__taster):
-            raise Exception("Falsche Taster Nummer." + taster_nr)
+            raise ValueError("Falsche Taster Nummer." + taster_nr)
 
         GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH)
         GPIO.add_event_callback(self.__taster[taster_nr], methode)
