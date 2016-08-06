@@ -37,6 +37,7 @@ class EAModul:
         >>> from eapi.hw import EAModul
 
         >>> ea = EAModul()
+        >>> ea.cleanup()
         """
         GPIO.setmode(GPIO.BOARD)
 
@@ -49,11 +50,12 @@ class EAModul:
         # Für jede LED wird ein PWM bereitgestellt, ueber den die LED 
         # gedimmt werden kann
         self.__pwms = [
-            GPIO.PWM(pin_led_rot, 100),
-            GPIO.PWM(pin_led_gelb, 100),
-            GPIO.PWM(pin_led_gruen, 100)
+            GPIO.PWM(pin_led_rot, 50),
+            GPIO.PWM(pin_led_gelb, 50),
+            GPIO.PWM(pin_led_gruen, 50)
             ]
-
+        for pwm in self.__pwms:
+            pwm.start(0)
 
     def taster_gedrueckt(self, num=0):
         """
@@ -68,21 +70,24 @@ class EAModul:
         ...   ea_modul.schalte_led(EAModul.LED_ROT, 1)
         ...   time.sleep(0.2)
         ...   ea_modul.schalte_led(EAModul.LED_ROT, 0)
-
+        >>> ea_modul.cleanup()
         """
         if 0 <= num < len(self.__taster):
-            return GPIO.input(self.__taster[num])
+            if GPIO.input(self.__taster[num]):
+                return True
+            else:
+                return False
         else:
             raise Exception(
                 "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self.__taster)-1))
 
-    def schalte_led(self, led_farbe, an_aus):
+    def schalte_led(self, led_farbe, helligkeit):
         """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
 
         Der Wert für led_farbe ist LED_ROT, LED_GELB oder LED_GRUEN.
 
-        Wenn für an_aus eine Kommazahl zwischen 0 und 1 angegeben
+        Wenn für helligkeit eine Kommazahl zwischen 0 und 1 angegeben
         wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
         LED nur mit halber Kraft leuchten.
 
@@ -94,24 +99,17 @@ class EAModul:
         >>> ea_modul.schalte_led(EAModul.LED_ROT, 1)
         >>> ea_modul.schalte_led(EAModul.LED_GELB, 0)
         >>> ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
+        >>> ea_modul.cleanup()
         """
 
         if 0 <= led_farbe < len(self.__leds):
-            if an_aus == 1 or an_aus == 0:
-                # LED ein oder ausschalten
-                self.__pwms[led_farbe].stop()
-                # Konvertierung nach int notwendig, falls an_aus = 1.0 oder 0.0
-                GPIO.output(self.__leds[led_farbe], int(an_aus))
-
-            elif isinstance(an_aus, float) and 0 <= an_aus <= 1:
+            if 0 <= helligkeit <= 1:
                 # LED dimmen
                 pwm = self.__pwms[led_farbe]
-                pwm.start(0)
-                pwm.ChangeDutyCycle(an_aus*100)
+                pwm.ChangeDutyCycle(helligkeit*100)
 
             else:
-                raise Exception(
-                    "Wert für an_aus muss zwischen 0 und 1 liegen.")
+                raise Exception("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
         else:
             raise Exception("Falsche LED-Farbe.")
 
@@ -129,6 +127,7 @@ class EAModul:
 
         >>> ea_modul = EAModul()
         >>> ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
+        >>> ea_modul.cleanup()
         """
         if taster_nr < 0 or taster_nr >= len(self.__taster):
             raise Exception("Falsche Taster Nummer." + taster_nr)
