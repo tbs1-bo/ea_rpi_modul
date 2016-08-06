@@ -27,7 +27,7 @@ class EAModulTest(unittest.TestCase):
                 wert += 0.1
             
             with self.assertRaises(ValueError):
-                self.ea.schalte_led(1.1, 0)
+                self.ea.schalte_led(0, 1.1)
             
     def test_taster_gedrueckt(self):
         for i in [0, 1]:
