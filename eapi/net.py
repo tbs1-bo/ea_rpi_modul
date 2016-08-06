@@ -45,7 +45,8 @@ from eapi.hw import EAModul
 class EAModulUDPHandler(socketserver.BaseRequestHandler):
     """Ein Handler für UDP requests an den EAModulServer."""
 
-    eamodul = EAModul()
+    def __init__(self):
+        self.eamodul = eamodul
 
     def handle(self):
         """Der UDP-Handler bearbeitet UDP-Requests gemäß der Modulbeschreibung 
