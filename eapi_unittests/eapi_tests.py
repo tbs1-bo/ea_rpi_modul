@@ -6,10 +6,13 @@ class EAModulTest(unittest.TestCase):
     def setUp(self):
         self.ea = EAModul()
 
+    def tearDown(self):
+        self.ea.cleanup()
+
     def test_init(self):
         ea = EAModul()
         self.assertIsNotNone(ea)
-        ea = EAModul(1, 2, 3, 4, 5)
+        ea = EAModul(29, 31, 33, 35, 37)
         self.assertIsNotNone(ea)
 
         with self.assertRaises(Exception):
@@ -34,9 +37,6 @@ class EAModulTest(unittest.TestCase):
 
         with self.assertRaises(Exception):
             self.ea.taster_gedrueckt(2)
-
-    def test_celanup(self):
-        self.ea.cleanup()
 
     def test_event_registrieren(self):
         def m(p):
