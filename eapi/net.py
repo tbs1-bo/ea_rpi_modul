@@ -149,27 +149,28 @@ class EAModulClient:
         self.client.sendto(bytes([byte]), (self.servername, self.serverport))
 
 
-# Main
-#
-if __name__ == "__main__":
+def main():
+    """Hauptprogramm, über das Client und Server gestartet werden können, wenn
+    das Modul ausgeführt wird.
+    """
     import sys
 
     if len(sys.argv) >= 2:
-        __hostname = input("Hostname (Enter für localhost):")
-        if __hostname == '':
-            __hostname = 'localhost'
-        __port = input("Port (Enter für 9999):")
-        if __port == '':
-            __port = '9999'
+        hostname = input("Hostname (Enter für localhost):")
+        if hostname == '':
+            hostname = 'localhost'
+        port = input("Port (Enter für 9999):")
+        if port == '':
+            port = '9999'
 
         if sys.argv[1] == "startserver":
-            print("Starte Server auf", __hostname, "auf Port", __port)
-            __easerver = EAModulServer(__hostname, int(__port))
-            __easerver.serve_forever()
+            print("Starte Server auf", hostname, "auf Port", port)
+            easerver = EAModulServer(hostname, int(port))
+            easerver.serve_forever()
 
         elif sys.argv[1] == "startclient":
             print("Starte Client")
-            __client = EAModulClient(__hostname, int(__port))
+            client = EAModulClient(hostname, int(port))
 
             print("""
             Welche LEDs sollen angeschaltet werden? Gib drei Werte (0 oder 1)
@@ -178,15 +179,15 @@ if __name__ == "__main__":
             'q' beendet das Programm""")
 
             while True:
-                __eingabe = input()                    
-                if __eingabe == 'q':
+                eingabe = input()
+                if eingabe == 'q':
                     exit(0)
 
                 try:
-                    __rot = int(__eingabe[0])
-                    __gelb = int(__eingabe[1])
-                    __gruen = int(__eingabe[2])
-                    __client.sende(__rot, __gelb, __gruen)
+                    rot = int(eingabe[0])
+                    gelb = int(eingabe[1])
+                    gruen = int(eingabe[2])
+                    client.sende(rot, gelb, gruen)
 
                 except IndexError:
                     print("Eingabe fehlerhaft. Erwarte genau drei Zahlen (0 oder 1).")
@@ -194,3 +195,9 @@ if __name__ == "__main__":
                     
     else:
         print("Befehl angeben: startserver oder startclient")
+
+
+# Main
+#
+if __name__ == "__main__":
+    main()

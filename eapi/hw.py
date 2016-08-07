@@ -204,58 +204,78 @@ class DimmbaresEAModul(EAModul):
         else:
             raise ValueError("Falsche LED-Farbe.")
 
-if __name__ == "__main__":
+
+def demo_led_taster():
+    """
+    Ein einfaches Demoprogramm, um die LED und Taster auf dem Board zu prüfen.
+    """
     import time
 
-    # TODO Quelltext in Demo-Methoden auslagern
+    input(
+        """
+        Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über
+        den einen Taster die gelbe LED an- und ausgeschaltet werden. Der
+        andere Taster beendet das Programm, wenn er länger gedrückt wird.
+        (Enter)
+        """)
 
+    ea_modul = EAModul()
+
+    def __taster0_gedrueckt(pin):
+        global ea_modul
+        ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+
+    ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
+
+    try:
+        while not ea_modul.taster_gedrueckt(1):
+            ea_modul.schalte_led(EAModul.LED_ROT, 1)
+            time.sleep(0.2)
+            ea_modul.schalte_led(EAModul.LED_ROT, 0)
+            time.sleep(0.2)
+
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
+            time.sleep(0.5)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
+            time.sleep(0.2)
+
+    except KeyboardInterrupt:
+        ea_modul.cleanup()
+    finally:
+        ea_modul.cleanup()
+
+
+def demo_dimmen():
+    """Demoprogramm, um die Dimmen-Funktionalität zu prüfen."""
+
+    import time
+
+    input(
+        "Alle LEDs werden 0.0 auf 1.0 gedimmt und dann von 1.0 auf 0.0 (Enter)")
+    dim_ea_modul = DimmbaresEAModul()
+    for i in range(100):
+        dim_ea_modul.schalte_led(EAModul.LED_ROT, i / 100)
+        dim_ea_modul.schalte_led(EAModul.LED_GELB, i / 100)
+        dim_ea_modul.schalte_led(EAModul.LED_GRUEN, i / 100)
+        time.sleep(0.05)
+    for i in range(100):
+        dim_ea_modul.schalte_led(EAModul.LED_ROT, 1 - i / 100)
+        dim_ea_modul.schalte_led(EAModul.LED_GELB, 1 - i / 100)
+        dim_ea_modul.schalte_led(EAModul.LED_GRUEN, 1 - i / 100)
+        time.sleep(0.05)
+
+    dim_ea_modul.cleanup()
+
+
+def main():
+    """Hauptprogramm, das beim Starten des Moduls ausgeführt wird."""
     __command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
-    if __command == "demo_dimmen":        
-        input("Alle LEDs werden 0.0 auf 1.0 gedimmt und dann von 1.0 auf 0.0 (Enter)")
-        __ea_modul = DimmbaresEAModul()
-        for i in range(100):
-            __ea_modul.schalte_led(EAModul.LED_ROT, i/100)
-            __ea_modul.schalte_led(EAModul.LED_GELB, i/100)
-            __ea_modul.schalte_led(EAModul.LED_GRUEN, i/100)
-            time.sleep(0.05)
-        for i in range(100):
-            __ea_modul.schalte_led(EAModul.LED_ROT, 1-i/100)
-            __ea_modul.schalte_led(EAModul.LED_GELB, 1-i/100)
-            __ea_modul.schalte_led(EAModul.LED_GRUEN, 1-i/100)
-            time.sleep(0.05)
-
-        __ea_modul.cleanup()
+    if __command == "demo_dimmen":
+        demo_dimmen()
 
     elif __command == "demo_led_taster":
-        input(
-            """
-            Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über
-            den einen Taster die gelbe LED an- und ausgeschaltet werden. Der
-            andere Taster beendet das Programm, wenn er länger gedrückt wird.
-            (Enter)
-            """)
+        demo_led_taster()
 
-        __ea_modul = EAModul()
 
-        def __taster0_gedrueckt(pin):
-            global __ea_modul
-            __ea_modul.schalte_led(EAModul.LED_GELB, __ea_modul.taster_gedrueckt(0))
-
-        __ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
-
-        try:
-            while not __ea_modul.taster_gedrueckt(1):
-                __ea_modul.schalte_led(EAModul.LED_ROT, 1)
-                time.sleep(0.2)
-                __ea_modul.schalte_led(EAModul.LED_ROT, 0)
-                time.sleep(0.2)
-
-                __ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
-                time.sleep(0.5)
-                __ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
-                time.sleep(0.2)
-
-        except KeyboardInterrupt:
-            __ea_modul.cleanup()
-        finally:
-            __ea_modul.cleanup()
+if __name__ == "__main__":
+    main()
