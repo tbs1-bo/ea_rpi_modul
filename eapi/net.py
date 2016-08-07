@@ -16,14 +16,24 @@ gestartet werden.
   $ python3 -m eapi.net startserver
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
-gesendeter Request besteht aus genau drei Bytes - für jede LED ein Byte: erst
-rot, dann gelb zuletzt grün. Der Wert des Bytes gibt in Prozent (0-100) die
-Helligkeit der LED an. Werte außerhalb dieses Bereiches werden ignoriert.
+gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
+werden ignoriert. Die letzen drei Bit (0 oder 1) des gesendeten Bytes, werden
+als Werte für die rote, gelbe und grüne LED interpretiert:
 
-Mit Netcat und echo können drei Bytes einfach an einen Testserver wie folgt
+  ? ? ? ? ? 0 1 0
+            ^ ^ ^
+            | | |
+            | | grün
+            | gelb
+            rot
+
+Die Bitsequenz ?????010 (? bedeutet 'beliebig') schaltet die gelbe LED an und
+die rote und grüne LED aus.
+
+Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
 
-  $ echo -en '\\x02\\x64\\x00' | nc -4u localhost 9999
+  $ echo -en '\\x02' | nc -4u localhost 9999
 
 Hex 2 (\\x02) entspricht dem Hexwert 2. Mit der Option -e wird eine
 Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
@@ -61,17 +71,14 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
         # Senders. Wir greifen die Daten heraus.
         data = self.request[0]
 
-        # Erwarte mindestens drei Bytes im Request
-        # Für jede LED ein Byte (rot, gelb, grün)
-        if len(data) < 3:
+        # Erwarte mindestens ein Byte im Request
+        if len(data) < 1:
             return
 
-        if 0 <= data[0] <= 100:
-            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_ROT, data[0]/100)
-        if 0 <= data[1] <= 100:
-            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GELB, data[1]/100)
-        if 0 <= data[2] <= 100:
-            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GRUEN, data[2]/100)
+        byte = int(data[0])
+        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_ROT, byte & 1 == 1)
+        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GELB, byte & 2 == 2)
+        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GRUEN, byte & 4 == 4)
 
 
 class EAModulServer(socketserver.UDPServer):
@@ -107,8 +114,8 @@ class EAModulClient:
     Nun kann er über mit dem Server kommunizieren und die dortigen LEDs
     ansteuern.
 
-    >>> client.sende(100, 0, 100)
-    >>> client.sende(50, 0, 30)
+    >>> client.sende(1, 0, 1)
+    >>> client.sende(0, 0, 1)
     """
 
     def __init__(self, servername, serverport):
@@ -128,19 +135,18 @@ class EAModulClient:
         """Sende an den Server die Information, welche LEDs an- bzw. 
         ausgeschaltet werden sollen.
 
-        Die Werte für rot, gelb und grün müssen zwischen 0 und 100 liegen.
+        Die Werte für rot, gelb und grün müssen 0 oder 1 sein.
         """
 
-        # Standardwerte auf 255 festelgen -> werden ignoriert.
-        data = [255, 255, 255]
-        if 0 <= rot <= 100:
-            data[0] = rot
-        if 0 <= gelb <= 100:
-            data[1] = gelb
-        if 0 <= gruen <= 100:
-            data[2] = gruen
+        byte = 0
+        if gruen:
+            byte += 1
+        if gelb:
+            byte += 2
+        if rot:
+            byte += 4
 
-        self.client.sendto(bytes(data), (self.servername, self.serverport))
+        self.client.sendto(bytes([byte]), (self.servername, self.serverport))
 
 
 # Main
@@ -166,26 +172,24 @@ if __name__ == "__main__":
             __client = EAModulClient(__hostname, int(__port))
 
             print("""
-            Welche LEDs sollen angeschaltet werden? Gib drei Werte zwischen 
-            0 und 100 ein (getrennt durch Leerzeichen: erst rot, dann gelb, 
-            dann grün)
-            Beispiel: 65 100 0 schaltet gelb an, grün aus, rot leuchtet mit 
-            halber Helligkeit.
+            Welche LEDs sollen angeschaltet werden? Gib drei Werte (0 oder 1)
+            ein (erst rot, dann gelb, dann grün)
+            Beispiel: 010 schaltet gelb an und rot und grün aus.
             'q' beendet das Programm""")
 
             while True:
                 __eingabe = input()                    
                 if __eingabe == 'q':
                     exit(0)
+
                 try:
-                    __seingabe = __eingabe.split(' ')
-                    __rot = int(__seingabe[0])
-                    __gelb = int(__seingabe[1])
-                    __gruen = int(__seingabe[2])
+                    __rot = int(__eingabe[0])
+                    __gelb = int(__eingabe[1])
+                    __gruen = int(__eingabe[2])
                     __client.sende(__rot, __gelb, __gruen)
 
                 except IndexError:
-                    print("Eingabe fehlerhaft. Erwarte genau drei Zahlen zwischen 0 und 100.")
+                    print("Eingabe fehlerhaft. Erwarte genau drei Zahlen (0 oder 1).")
                     print("Bitte wiederholen!")
                     
     else:

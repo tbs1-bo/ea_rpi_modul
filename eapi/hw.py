@@ -7,6 +7,8 @@ aufgerufen werden können:
 
   $ python3 -m eapi.hw
 
+Mit Hilfe der Klasse DimmbaresEAModul können die LEDs auf dem Board gedimmt
+werden.
 """
 
 
@@ -26,7 +28,8 @@ class EAModul:
     LED_GELB = 1
     LED_GRUEN = 2
 
-    def __init__(self, pin_taster0=29, pin_taster1=31, pin_led_rot=33, pin_led_gelb=35, pin_led_gruen=37):
+    def __init__(self, pin_taster0=29, pin_taster1=31,
+                 pin_led_rot=33, pin_led_gelb=35, pin_led_gruen=37):
         """
         Die PINs des Moduls werden konfiguriert.
 
@@ -41,21 +44,11 @@ class EAModul:
         """
         GPIO.setmode(GPIO.BOARD)
 
-        self.__taster = [pin_taster0, pin_taster1]
-        GPIO.setup(self.__taster, GPIO.IN)
+        self._taster = [pin_taster0, pin_taster1]
+        GPIO.setup(self._taster, GPIO.IN)
 
-        self.__leds = [pin_led_rot, pin_led_gelb, pin_led_gruen]
-        GPIO.setup(self.__leds, GPIO.OUT)
-
-        # Für jede LED wird ein PWM bereitgestellt, ueber den die LED 
-        # gedimmt werden kann
-        self.__pwms = [
-            GPIO.PWM(pin_led_rot, 50),
-            GPIO.PWM(pin_led_gelb, 50),
-            GPIO.PWM(pin_led_gruen, 50)
-            ]
-        for pwm in self.__pwms:
-            pwm.start(0)
+        self._leds = [pin_led_rot, pin_led_gelb, pin_led_gruen]
+        GPIO.setup(self._leds, GPIO.OUT)
 
     def taster_gedrueckt(self, num=0):
         """
@@ -72,24 +65,20 @@ class EAModul:
         ...   ea_modul.schalte_led(EAModul.LED_ROT, 0)
         >>> ea_modul.cleanup()
         """
-        if 0 <= num < len(self.__taster):
-            if GPIO.input(self.__taster[num]):
+        if 0 <= num < len(self._taster):
+            if GPIO.input(self._taster[num]):
                 return True
             else:
                 return False
         else:
             raise ValueError(
                 "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
-                    ln=len(self.__taster)-1))
+                    ln=len(self._taster) - 1))
 
-    def schalte_led(self, led_farbe, helligkeit):
+    def schalte_led(self, led_farbe, an_aus):
         """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
 
         Der Wert für led_farbe ist LED_ROT, LED_GELB oder LED_GRUEN.
-
-        Wenn für helligkeit eine Kommazahl zwischen 0 und 1 angegeben
-        wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
-        LED nur mit halber Kraft leuchten.
 
         Eine einfache Verwendung könnte wie folgt aussehen:
 
@@ -98,18 +87,15 @@ class EAModul:
         >>> ea_modul = EAModul()
         >>> ea_modul.schalte_led(EAModul.LED_ROT, 1)
         >>> ea_modul.schalte_led(EAModul.LED_GELB, 0)
-        >>> ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
+        >>> ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
         >>> ea_modul.cleanup()
         """
 
-        if 0 <= led_farbe < len(self.__leds):
-            if 0 <= helligkeit <= 1:
-                # LED dimmen
-                pwm = self.__pwms[led_farbe]
-                pwm.ChangeDutyCycle(helligkeit*100)
-
+        if 0 <= led_farbe < len(self._leds):
+            if an_aus == 1 or an_aus == 0:
+                GPIO.output(self._leds[led_farbe], an_aus)
             else:
-                raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
+                raise ValueError("Wert für an_aus muss zwischen 0 und 1 liegen.")
         else:
             raise ValueError("Falsche LED-Farbe.")
 
@@ -129,11 +115,11 @@ class EAModul:
         >>> ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
         >>> ea_modul.cleanup()
         """
-        if taster_nr < 0 or taster_nr >= len(self.__taster):
+        if taster_nr < 0 or taster_nr >= len(self._taster):
             raise ValueError("Falsche Taster Nummer." + taster_nr)
 
-        GPIO.add_event_detect(self.__taster[taster_nr], GPIO.BOTH)
-        GPIO.add_event_callback(self.__taster[taster_nr], methode)
+        GPIO.add_event_detect(self._taster[taster_nr], GPIO.BOTH)
+        GPIO.add_event_callback(self._taster[taster_nr], methode)
 
     def cleanup(self):
         """Setzt alle Pins des Pi wieder in den Ausgangszustand.
@@ -145,13 +131,88 @@ class EAModul:
         GPIO.cleanup()
 
 
+class DimmbaresEAModul(EAModul):
+    """Ein Erweiterung der Klasse EAModul, die dimmbare LEDs unterstüzt.
+
+    Im Unterschied zum EAModul können über die Klasse DimmbaresEAModul die LEDs
+    mit Hilfe von PWM in der Helligkeit reguliert werden. Hierbei wurde die
+    Methode schalte_led so angepasst, dass sie nun auch Werte zwischen 0.0 und
+    1.0 annehmen kann.
+
+    >>> from eapi.hw import DimmbaresEAModul
+    >>> ea = DimmbaresEAModul()
+    >>> ea.schalte_led(EAModul.LED_ROT, 0.5)
+    >>> ea.schalte_led(EAModul.LED_GELB, 0.8)
+    >>> ea.schalte_led(EAModul.LED_GRUEN, 0.2)
+    """
+
+    def __init__(self, pin_taster0=29, pin_taster1=31,
+                 pin_led_rot=33, pin_led_gelb=35, pin_led_gruen=37):
+        """
+        Die PINs des Moduls werden konfiguriert.
+
+        Pins der LED werden als Ausgänge, und Pins der Taster als Eingänge
+        konfiguriert. Wenn keine PINS angegeben werden, werden die PINs
+        oberhalb des GND Pins links unten verwendet.
+
+        >>> from eapi.hw import DimmbaresEAModul
+
+        >>> ea = DimmbaresEAModul()
+        >>> ea.cleanup()
+        """
+        super().__init__(pin_taster0, pin_taster1,
+                         pin_led_rot, pin_led_gelb, pin_led_gruen)
+
+        # Für jede LED wird ein PWM bereitgestellt, ueber den die LED
+        # gedimmt werden kann
+        self.__pwms = [
+            GPIO.PWM(pin_led_rot, 50),
+            GPIO.PWM(pin_led_gelb, 50),
+            GPIO.PWM(pin_led_gruen, 50)
+            ]
+        for pwm in self.__pwms:
+            pwm.start(0)
+
+    def schalte_led(self, led_farbe, helligkeit):
+        """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
+
+        Der Wert für led_farbe ist LED_ROT, LED_GELB oder LED_GRUEN.
+
+        Wenn für helligkeit eine Kommazahl zwischen 0 und 1 angegeben
+        wird, lässt sich die LED dimmen: ein Wert von 0.5 lässt die
+        LED nur mit halber Kraft leuchten.
+
+        Eine einfache Verwendung könnte wie folgt aussehen:
+
+        >>> from eapi.hw import DimmbaresEAModul
+
+        >>> ea_modul = DimmbaresEAModul()
+        >>> ea_modul.schalte_led(EAModul.LED_ROT, 1)
+        >>> ea_modul.schalte_led(EAModul.LED_GELB, 0)
+        >>> ea_modul.schalte_led(EAModul.LED_GRUEN, 0.5)
+        >>> ea_modul.cleanup()
+        """
+
+        if 0 <= led_farbe < len(self._leds):
+            if 0 <= helligkeit <= 1:
+                # LED dimmen
+                pwm = self.__pwms[led_farbe]
+                pwm.ChangeDutyCycle(helligkeit*100)
+
+            else:
+                raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
+        else:
+            raise ValueError("Falsche LED-Farbe.")
+
 if __name__ == "__main__":
     import time
+
+    # TODO Quelltext in Demo-Methoden auslagern
 
     __command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
     if __command == "demo_dimmen":        
         input("Alle LEDs werden 0.0 auf 1.0 gedimmt und dann von 1.0 auf 0.0 (Enter)")
-        __ea_modul = EAModul()
+        __ea_modul = DimmbaresEAModul()
         for i in range(100):
             __ea_modul.schalte_led(EAModul.LED_ROT, i/100)
             __ea_modul.schalte_led(EAModul.LED_GELB, i/100)
@@ -168,9 +229,9 @@ if __name__ == "__main__":
     elif __command == "demo_led_taster":
         input(
             """
-            Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über den einen 
-            Taster die gelbe LED an- und ausgeschaltet werden. Der andere Taster beendet
-            das Programm, wenn er länger gedrückt wird.
+            Die rote und grüne LED blinken abwechselnd. Gleichzeitig kann über
+            den einen Taster die gelbe LED an- und ausgeschaltet werden. Der
+            andere Taster beendet das Programm, wenn er länger gedrückt wird.
             (Enter)
             """)
 

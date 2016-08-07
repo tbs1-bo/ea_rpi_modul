@@ -1,5 +1,26 @@
 import unittest
-from eapi.hw import EAModul
+from eapi.hw import EAModul, DimmbaresEAModul
+
+
+class DimmbaresEAModulTest(unittest.TestCase):
+    def setUp(self):
+        self.ea = DimmbaresEAModul()
+
+    def tearDown(self):
+        self.ea.cleanup()
+
+    def test_schalte_led(self):
+        for farbe in [EAModul.LED_ROT, EAModul.LED_GELB, EAModul.LED_GRUEN]:
+            self.ea.schalte_led(farbe, 1)
+            self.ea.schalte_led(farbe, 0)
+
+            wert = 0.0
+            while wert <= 1.0:
+                self.ea.schalte_led(farbe, wert)
+                wert += 0.1
+
+        with self.assertRaises(ValueError):
+            self.ea.schalte_led(0, 1.1)
 
 
 class EAModulTest(unittest.TestCase):
@@ -21,13 +42,11 @@ class EAModulTest(unittest.TestCase):
             self.ea.schalte_led(farbe, 1)
             self.ea.schalte_led(farbe, 0)
 
-            wert = 0.0
-            while wert <= 1.0:
-                self.ea.schalte_led(farbe, wert)
-                wert += 0.1
-            
-            with self.assertRaises(ValueError):
-                self.ea.schalte_led(0, 1.1)
+        with self.assertRaises(ValueError):
+            self.ea.schalte_led(0, 0.5)
+
+        with self.assertRaises(ValueError):
+            self.ea.schalte_led(0, 1.1)
             
     def test_taster_gedrueckt(self):
         for i in [0, 1]:
