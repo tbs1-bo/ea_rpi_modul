@@ -33,7 +33,7 @@ die rote und grüne LED aus.
 Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
 
-  $ echo -en '\\x02' | nc -4u localhost 9999
+  $ echo -en '\x02' | nc -4u localhost 9999
 
 Hex 2 (\\x02) entspricht dem Hexwert 2. Mit der Option -e wird eine
 Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
