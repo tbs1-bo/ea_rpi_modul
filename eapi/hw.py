@@ -95,7 +95,7 @@ class EAModul:
             if an_aus == 1 or an_aus == 0:
                 GPIO.output(self._leds[led_farbe], an_aus)
             else:
-                raise ValueError("Wert für an_aus muss zwischen 0 und 1 liegen.")
+                raise ValueError("Wert für an_aus muss 0 oder 1 sein.")
         else:
             raise ValueError("Falsche LED-Farbe.")
 
