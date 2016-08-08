@@ -29,9 +29,9 @@ als Werte für die rote, gelbe und grüne LED interpretiert:
 
 Für jede Farbe werden zwei Bit verwendet. Das erste Bit besagt, ob die
 entsprechende LED geschaltet werden soll (1) oder nicht (0). Wenn die LED
-geschalet werden soll, so beschreibt das zweite Bit beschreibt den Zustand, in
-den die LED geschaltet werden soll: an (1) oder aus (0) - wenn die
-LED nicht geschaltet werden soll, ist der Wert beliebig.
+geschalet werden soll, beschreibt das zweite Bit den Zustand, in den die LED
+geschaltet werden soll: an (1) oder aus (0). Wenn die LED nicht geschaltet
+werden soll, ist der Wert beliebig.
 
 Die Bitsequenz ?? 0? 11 10 (? bedeutet 'beliebig') belässt die rote LED in
 ihrem bisherigen Zustandschaltet, schaltet die gelbe LED an und die grüne LED
