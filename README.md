@@ -49,8 +49,9 @@ Klasse EAModul
 
 ![Klassendiagramm (automatisch generiert mit pyreverse)](./klassendiagramm.png)
 
-Mit Hilfe der Klasse `EAModul` können die Taster und LED einfach angesteuert
-bzw. ausgelesen werden.
+Mit Hilfe der Klasse 
+[EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html) 
+können die Taster und LED einfach angesteuert bzw. ausgelesen werden.
 
     from eapi.hw import EAModul           #0
 
@@ -158,7 +159,9 @@ Das EA-Modul ist netzwerkfähig und lässt sich über ein Netzwerk ansteuern. So
 kann man die drei LEDs über einen UDP-Server im Netz leicht zugänglich
 machen. Ein Erläuterung über das genaue Vorgehen befindet sich in der
 Dokumentation des Moduls `eapi.net`. Sie kann mit `pydoc3 eapi.net` abgerufen
-werden.
+werden und ist 
+[online](http://pythonhosted.org/eapi/namespaceeapi_1_1net.html) 
+verfügbar.
 
 Fehler oder Bugs
 ================
