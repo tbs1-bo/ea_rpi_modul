@@ -268,12 +268,16 @@ def demo_dimmen():
 
 
 def main():
-    """Hauptprogramm, das beim Starten des Moduls ausgeführt wird."""
-    __command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
-    if __command == "demo_dimmen":
+    """Hauptprogramm, das beim Starten des Moduls ausgeführt wird.
+
+    Hierüber können verschiedene Demoprogramme gestartet werden.
+    """
+
+    command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
+    if command == "demo_dimmen":
         demo_dimmen()
 
-    elif __command == "demo_led_taster":
+    elif command == "demo_led_taster":
         demo_led_taster()
 
 
