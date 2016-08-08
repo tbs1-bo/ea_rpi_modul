@@ -14,7 +14,8 @@ setuptools.setup(
     long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls fuer den Raspberry. Fuer die Ausgabe dienen LEDs und fuer die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",
     author="Marco Bakera",
     author_email="pintman@bakera.de",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=['eapi.unittests']),
+    test_suite="eapi.unittests",
     classifiers=[  # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 4 - Beta",
         "Intended Audience :: Education",
