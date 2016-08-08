@@ -9,6 +9,35 @@ aufgerufen werden können:
 
 Mit Hilfe der Klasse DimmbaresEAModul können die LEDs auf dem Board gedimmt
 werden.
+
+Das folgende Beispiel zeigt eine mögliche Verwendung:
+
+>>> from eapi.hw import EAModul
+>>> ea = EAModul()
+
+Nun können wir ein paar LEDs anschalten
+
+>>> ea.schalte_led(EAModul.LED_ROT, 1)
+>>> ea.schalte_led(EAModul.LED_GELB, 1)
+>>> ea.schalte_led(EAModul.LED_GRUEN, 1)
+
+und wieder ausschalten
+
+>>> ea.schalte_led(EAModul.LED_ROT, 0)
+>>> ea.schalte_led(EAModul.LED_GELB, 0)
+>>> ea.schalte_led(EAModul.LED_GRUEN, 0)
+
+Der Wert des Tasters kann auch abgefragt werden.
+
+>>> taster0_gedrueckt = ea.taster_gedrueckt(0)
+>>> taster1_gedrueckt = ea.taster_gedrueckt(1)
+
+Zum Schluss fahren wir das Modul wieder herunter:
+
+>>> ea.cleanup()
+
+Schaue in die Dokumentation der anderen Methoden, um weitere
+Quelltextbeispiele zu finden.
 """
 
 
