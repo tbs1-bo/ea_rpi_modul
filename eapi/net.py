@@ -129,8 +129,7 @@ class EAModulClient:
     >>> from eapi.net import EAModulClient
     >>> client = EAModulClient('localhost', 9999)
 
-    Nun kann er über mit dem Server kommunizieren und die dortigen LEDs
-    ansteuern.
+    Nun kann er mit dem Server kommunizieren und die dortigen LEDs ansteuern.
 
     >>> client.sende(1, 0, 1)
     >>> client.sende(0, 0, 1)
