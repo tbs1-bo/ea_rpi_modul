@@ -17,25 +17,32 @@ gestartet werden.
 
 Nun wartet der Server auf dem Port 9999 auf UDP-Pakete. Ein an den Server
 gesendeter Request besteht aus genau einem Byte - weitere gesendete Bytes
-werden ignoriert. Die letzen drei Bit (0 oder 1) des gesendeten Bytes, werden
+werden ignoriert. Die letzen sechs Bit (0 oder 1) des gesendeten Bytes, werden
 als Werte für die rote, gelbe und grüne LED interpretiert:
 
-  ? ? ? ? ? 0 1 0
-            ^ ^ ^
-            | | |
-            | | grün
-            | gelb
-            rot
+  ? ? 0 0 1 1 1 0
+      ^   ^   ^
+      |   |   |
+      |   |   grün
+      |   gelb
+      rot
 
-Die Bitsequenz ?????010 (? bedeutet 'beliebig') schaltet die gelbe LED an und
-die rote und grüne LED aus.
+Für jede Farbe werden zwei Bit verwendet. Das erste Bit besagt, ob die
+entsprechende LED geschaltet werden soll (1) oder nicht (0). Wenn die LED
+geschalet werden soll, so beschreibt das zweite Bit beschreibt den Zustand, in
+den die LED geschaltet werden soll: an (1) oder aus (0) - wenn die
+LED nicht geschaltet werden soll, ist der Wert beliebig.
+
+Die Bitsequenz ?? 0? 11 10 (? bedeutet 'beliebig') belässt die rote LED in
+ihrem bisherigen Zustandschaltet, schaltet die gelbe LED an und die grüne LED
+aus.
 
 Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
 
-  $ echo -en '\x02' | nc -4u localhost 9999
+  $ echo -en '\\xE' | nc -4u localhost 9999
 
-Hex 2 (\\x02) entspricht dem Hexwert 2. Mit der Option -e wird eine
+Der Hexwert E entspricht dem Binärwert 00001110. Mit der Option -e wird eine
 Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
 gesendet werden soll - also nur die angegebenen Bytes. Die Option -4 von nc
 sendet ein IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
@@ -75,10 +82,21 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
         if len(data) < 1:
             return
 
+        # ?? ?? ??
+        # ro ge gr
+        # 31 84 21
+        # 26
+        #
         byte = int(data[0])
-        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_ROT, byte & 1 == 1)
-        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GELB, byte & 2 == 2)
-        EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GRUEN, byte & 4 == 4)
+        if byte & 32 == 32:
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_ROT,
+                                                  byte & 16 == 16)
+        if byte & 8 == 8:
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GELB,
+                                                  byte & 4 == 4)
+        if byte & 2 == 2:
+            EAModulUDPHandler.eamodul.schalte_led(EAModul.LED_GRUEN,
+                                                  byte & 1 == 1)
 
 
 class EAModulServer(socketserver.UDPServer):
@@ -116,6 +134,14 @@ class EAModulClient:
 
     >>> client.sende(1, 0, 1)
     >>> client.sende(0, 0, 1)
+
+    Wenn ein Wert ungleich 0 oder 1 gesendet wird, so wird er ignoriert und die
+    LED behält ihren Wert bei.
+
+    >>> client.sende(1, 9, 1)
+
+    schaltet die rote und grüne LED ein und belässt die gelbe LED in ihrem
+    bisherigen Zustand.
     """
 
     def __init__(self, servername, serverport):
@@ -135,16 +161,29 @@ class EAModulClient:
         """Sende an den Server die Information, welche LEDs an- bzw. 
         ausgeschaltet werden sollen.
 
-        Die Werte für rot, gelb und grün müssen 0 oder 1 sein.
+        Werte von 0 oder 1 für rot, gelb und grün schalten die LED aus bzw. an.
+        Andere Werte werden ignoriert und belassen die LED in ihrem bisherigen
+        Zustand.
         """
 
+        # ? ?  ? ?  ? ?
+        # r o  g e  g r
+        # 3 1  8 4  2 1
+        # 2 6
+        #
         byte = 0
-        if gruen:
-            byte += 1
-        if gelb:
+        if gruen == 0 or gruen == 1:
             byte += 2
-        if rot:
-            byte += 4
+            if gruen:
+                byte += 1
+        if gelb == 0 or gelb == 1:
+            byte += 8
+            if gelb:
+                byte += 4
+        if rot == 0 or rot == 1:
+            byte += 32
+            if rot:
+                byte += 16
 
         self.client.sendto(bytes([byte]), (self.servername, self.serverport))
 
