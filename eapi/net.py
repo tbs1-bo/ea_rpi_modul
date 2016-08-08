@@ -215,6 +215,11 @@ def main():
             Welche LEDs sollen angeschaltet werden? Gib drei Werte (0 oder 1)
             ein (erst rot, dann gelb, dann grün)
             Beispiel: 010 schaltet gelb an und rot und grün aus.
+
+            Wenn Werte ungleich 0 der 1 verwendet werden, so bleibt die LED in
+            ihrem bisherigen Zustand: 050 schaltet rot und grün aus und belässt
+            gelb im bisherigen Zustand.
+
             'q' beendet das Programm""")
 
             while True:
