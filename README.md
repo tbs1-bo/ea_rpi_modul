@@ -70,7 +70,9 @@ können die Taster und LED einfach angesteuert bzw. ausgelesen werden.
 angegeben werden: zuerst die beiden Pins für die Taster, es folgen drei
 Pins für die LED.
 
-**#2 und #3** Hier wird die rote LED erst ein- und dann wieder ausgeschaltet.
+**#2** Hier wird die rote LED erst ein-
+
+**#3** ... und dann wieder ausgeschaltet.
 
 **#4** Der Zustand des Tasters mit der Nummer 0 wird abgefragt. Die Taster
 sind nummeriert (beginnend bei 0).
@@ -127,7 +129,7 @@ dies passiert, wird sie gleich dafür registriert.
 **#3** Die Methode wird für den Taster 0 registriert und aufgerufen, sobald
 der Taster gedrückt wird.
 
-**#4** Der Taster wird in einer Schleife immer wieder abgefragt. Solang der
+**#4** Der Taster wird in einer Schleife immer wieder abgefragt. Solange der
 Taster zum Zeitpunkt der Abfrage nicht gedrückt ist, läuft die Schleife weiter.
 
 
