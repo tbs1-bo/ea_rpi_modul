@@ -1,8 +1,14 @@
+"""Tests für verschiedene Komponenten und Klassen aus dem eapi-Modul und
+dessen Unterpaketen.
+"""
+
 import unittest
 from eapi.hw import EAModul, DimmbaresEAModul
 
 
 class DimmbaresEAModulTest(unittest.TestCase):
+    """Testet die Klasse DimmbaresEAModul."""
+
     def setUp(self):
         self.ea = DimmbaresEAModul()
 
@@ -24,6 +30,8 @@ class DimmbaresEAModulTest(unittest.TestCase):
 
 
 class EAModulTest(unittest.TestCase):
+    """Tests für die Klase EAModul."""
+
     def setUp(self):
         self.ea = EAModul()
 
