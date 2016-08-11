@@ -4,6 +4,7 @@ ea_rpi_modul
 Bei dem Projekt handelt es sich um eine Python Bibliothek für ein E/A-Modul
 (Eingabe-Ausgabe-Modul) für den Raspberry Pi.
 
+Informationen zur [Hardware](hardware)
 
 Installation
 ============
