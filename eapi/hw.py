@@ -357,6 +357,25 @@ def demo_dimmen():
 
     dim_ea_modul.cleanup()
 
+def demo_beobachter():
+    input("""
+          Für das EAModul wird ein Beobachter registriert, der auf Tastendrücke reagiert.
+
+          Abbruch mit Strg-C, Start mit Enter
+          """)
+
+    ea = EAModul()
+
+    class Beobachter:
+        def update(self, ea, args):
+            print("Updater erfolgt:", args)
+
+    b = Beobachter()
+    ea.add_observer(b)
+
+    while True:
+        pass
+
 
 def main():
     """Hauptprogramm, das beim Starten des Moduls ausgeführt wird.
@@ -364,12 +383,15 @@ def main():
     Hierüber können verschiedene Demoprogramme gestartet werden.
     """
 
-    command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
+    command = input("Befehl angeben: demo_led_taster demo_dimmen, demo_beobachter: ")
     if command == "demo_dimmen":
         demo_dimmen()
 
     elif command == "demo_led_taster":
         demo_led_taster()
+
+    elif command == "demo_beobachter":
+        demo_beobachter()
 
 
 if __name__ == "__main__":
