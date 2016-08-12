@@ -79,65 +79,47 @@ class EAModul:
         self._leds = [pin_led_rot, pin_led_gelb, pin_led_gruen]
         GPIO.setup(self._leds, GPIO.OUT)
 
-        # Observer initialisieren und eine Methode für Tastendruck registrieren.
-        self.__observer = []
-        self.taster_event_registrieren(0, self.__taster0_gedrueckt)
-        self.taster_event_registrieren(1, self.__taster1_gedrueckt)
+        # Observer initialisieren
+        self.__observer = dict()
+        self.__observer[EAModul.LED_ROT] = []
+        self.__observer[EAModul.LED_GELB] = []
+        self.__observer[EAModul.LED_GRUEN] = []
 
-    def add_observer(self, beobachter):
-        """Fügt einen Beobachter hinzu, der über Änderungen am Modul informiert
-        wird.
+    def led_event_registrieren(self, led_farbe, methode):
+        """Registriert eine Methode, die ausgeführt wird, sobald die
+        entsprechende LED ihren Wert ändert.
 
-        Der Beobachter wird über alle Veranderungen an dem EAModul informiert:
-        wenn eine LED geschaltet oder ein Taster gedrückt wird. Dazu
-        wird beim Beobachter eine Methode update(eamodul, args) aufgerufen und
-        das EA-Modul sowie weitere Informationen übergeben.
+        Die Methode wird über alle Veränderungen an der LED informiert. Dazu
+        wird die übergebene Methode aufgerufen.
 
-        >>> class Beobachter:
-        ...    def update(self, eamodul, args):
-        ...       print("update: Mit dem EA-Modul ist etwas passiert.")
-
-        >>> ea = EAModul()
-        >>> beobachter = Beobachter()
-        >>> ea.add_observer(beobachter)
-
-        Nun wird der Beobachter informiert, sobald etwas mit dem EAModul
-        passiert.
-
-        >>> ea.schalte_led(EAModul.LED_ROT, 1)
-        update: Mit dem EA-Modul ist etwas passiert.
-
-        In dem an den Beobachter übergebenen Argument 'args' werden weitere
-        Informationen über das Event übermittelt.
-
-        >>> class Beobachter2:
-        ...    def update(self, eamodul, args):
-        ...       print(args)
+        >>> def update_rote_led(neuer_wert):
+        ...    print("update: Status der roten LED hat sich geändert.")
+        ...    print("Neuer Wert:", neuer_wert)
 
         >>> ea = EAModul()
-        >>> beobachter = Beobachter2()
-        >>> ea.add_observer(beobachter)
+        >>> ea.led_event_registrieren(EAModul.LED_ROT, update_rote_led)
+
+        Nun wird die Update-Methode aufgerufen, sobald sich der Wert der LED
+        ändert.
+
         >>> ea.schalte_led(EAModul.LED_ROT, 1)
-        ['LED0', 1]
+        update: Status der roten LED hat sich geändert.
+        Neuer Wert: 1
+
         >>> ea.schalte_led(EAModul.LED_ROT, 0)
-        ['LED0', 0]
-        >>> ea.schalte_led(EAModul.LED_GELB, 1)
-        ['LED1', 1]
-        """
-        self.__observer.append(beobachter)
+        update: Status der roten LED hat sich geändert.
+        Neuer Wert: 0
 
-    def _notify(self, args):
+        >>> ea.cleanup()
+        """
+        self.__observer[led_farbe].append(methode)
+
+    def _notify(self, led_farbe, neuer_wert):
         """Alle registrierten Beobachter werden über eine Änderung
         informiert."""
 
-        for b in self.__observer:
-            b.update(self, args)
-
-    def __taster0_gedrueckt(self):
-        self._notify(["Taster", 0])
-
-    def __taster1_gedrueckt(self):
-        self._notify(["Taster", 1])
+        for methode in self.__observer[led_farbe]:
+            methode(neuer_wert)
 
     def taster_gedrueckt(self, num=0):
         """
@@ -183,20 +165,19 @@ class EAModul:
         if 0 <= led_farbe < len(self._leds):
             if an_aus == 1 or an_aus == 0:
                 GPIO.output(self._leds[led_farbe], an_aus)
-                self._notify(["LED" + str(led_farbe), an_aus])
+                self._notify(led_farbe, an_aus)
             else:
                 raise ValueError("Wert für an_aus muss 0 oder 1 sein.")
         else:
             raise ValueError("Falsche LED-Farbe.")
 
     def taster_event_registrieren(self, taster_nr, methode):
-        """Registriere eine Methode, die bei Betätigung ausgeführt wird.
+        """Registriere eine Methode, die bei Betätigung eines Tasters
+        ausgeführt wird.
 
         Die übergebene Methode muss ein Argument haben und wird mit der
         Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt oder
         losgelassen wird. Eine einfache Verwendung könnte wie folgt aussehen:
-
-        >>> from eapi.hw import EAModul
 
         >>> def taster0_gedrueckt(pin):
         ...  print("Taster 0 wurde gedrückt.")
@@ -288,7 +269,7 @@ class DimmbaresEAModul(EAModul):
                 # LED dimmen
                 pwm = self.__pwms[led_farbe]
                 pwm.ChangeDutyCycle(helligkeit*100)
-                self._notify(["LED" + str(led_farbe), helligkeit])
+                self._notify(led_farbe, helligkeit)
 
             else:
                 raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
@@ -357,25 +338,6 @@ def demo_dimmen():
 
     dim_ea_modul.cleanup()
 
-def demo_beobachter():
-    input("""
-          Für das EAModul wird ein Beobachter registriert, der auf Tastendrücke reagiert.
-
-          Abbruch mit Strg-C, Start mit Enter
-          """)
-
-    ea = EAModul()
-
-    class Beobachter:
-        def update(self, ea, args):
-            print("Updater erfolgt:", args)
-
-    b = Beobachter()
-    ea.add_observer(b)
-
-    while True:
-        pass
-
 
 def main():
     """Hauptprogramm, das beim Starten des Moduls ausgeführt wird.
@@ -383,15 +345,13 @@ def main():
     Hierüber können verschiedene Demoprogramme gestartet werden.
     """
 
-    command = input("Befehl angeben: demo_led_taster demo_dimmen, demo_beobachter: ")
+    command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
     if command == "demo_dimmen":
         demo_dimmen()
 
     elif command == "demo_led_taster":
         demo_led_taster()
 
-    elif command == "demo_beobachter":
-        demo_beobachter()
 
 
 if __name__ == "__main__":

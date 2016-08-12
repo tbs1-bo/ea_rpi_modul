@@ -28,20 +28,14 @@ class DimmbaresEAModulTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.ea.schalte_led(0, 1.1)
 
-    def test_add_observer(self):
+    def test_led_event_registrieren(self):
 
-        class Beobachter:
-            def update(self, eamodul, args):
-                if not isinstance(eamodul, EAModul):
-                    raise Exception()
-                if not args[0] == "LED" + str(EAModul.LED_ROT):
-                    raise Exception()
-                if not args[1] == 1:
-                    raise Exception()
+        def update_rote_led(neuer_wert):
+            if not neuer_wert == 0.1:
+                raise Exception()
 
-        beobachter = Beobachter()
-        self.ea.add_observer(beobachter)
-        self.ea.schalte_led(EAModul.LED_ROT, 1)
+        self.ea.led_event_registrieren(EAModul.LED_ROT, update_rote_led)
+        self.ea.schalte_led(EAModul.LED_ROT, 0.1)
 
 
 class EAModulTest(unittest.TestCase):
@@ -86,19 +80,13 @@ class EAModulTest(unittest.TestCase):
         self.ea.taster_event_registrieren(0, m)
         self.ea.taster_event_registrieren(1, m)
 
-    def test_add_observer(self):
+    def test_led_event_registrieren(self):
 
-        class Beobachter:
-            def update(self, eamodul, args):
-                if not isinstance(eamodul, EAModul):
-                    raise Exception()
-                if not args[0] == "LED" + str(EAModul.LED_ROT):
-                    raise Exception()
-                if not args[1] == 1:
-                    raise Exception()
+        def update_rote_led(neuer_wert):
+            if not neuer_wert == 1:
+                raise Exception()
 
-        beobachter = Beobachter()
-        self.ea.add_observer(beobachter)
+        self.ea.led_event_registrieren(EAModul.LED_ROT, update_rote_led)
         self.ea.schalte_led(EAModul.LED_ROT, 1)
 
 
