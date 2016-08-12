@@ -288,6 +288,7 @@ class DimmbaresEAModul(EAModul):
                 # LED dimmen
                 pwm = self.__pwms[led_farbe]
                 pwm.ChangeDutyCycle(helligkeit*100)
+                self._notify(["LED" + str(led_farbe), helligkeit])
 
             else:
                 raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
