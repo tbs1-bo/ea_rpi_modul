@@ -79,6 +79,66 @@ class EAModul:
         self._leds = [pin_led_rot, pin_led_gelb, pin_led_gruen]
         GPIO.setup(self._leds, GPIO.OUT)
 
+        # Observer initialisieren und eine Methode für Tastendruck registrieren.
+        self.__observer = []
+        self.taster_event_registrieren(0, self.__taster0_gedrueckt)
+        self.taster_event_registrieren(1, self.__taster1_gedrueckt)
+
+    def add_observer(self, beobachter):
+        """Fügt einen Beobachter hinzu, der über Änderungen am Modul informiert
+        wird.
+
+        Der Beobachter wird über alle Veranderungen an dem EAModul informiert:
+        wenn eine LED geschaltet oder ein Taster gedrückt wird. Dazu
+        wird beim Beobachter eine Methode update(eamodul, args) aufgerufen und
+        das EA-Modul sowie weitere Informationen übergeben.
+
+        >>> class Beobachter:
+        ...    def update(self, eamodul, args):
+        ...       print("update: Mit dem EA-Modul ist etwas passiert.")
+
+        >>> ea = EAModul()
+        >>> beobachter = Beobachter()
+        >>> ea.add_observer(beobachter)
+
+        Nun wird der Beobachter informiert, sobald etwas mit dem EAModul
+        passiert.
+
+        >>> ea.schalte_led(EAModul.LED_ROT, 1)
+        update: Mit dem EA-Modul ist etwas passiert.
+
+        In dem an den Beobachter übergebenen Argument 'args' werden weitere
+        Informationen über das Event übermittelt.
+
+        >>> class Beobachter2:
+        ...    def update(self, eamodul, args):
+        ...       print(args)
+
+        >>> ea = EAModul()
+        >>> beobachter = Beobachter2()
+        >>> ea.add_observer(beobachter)
+        >>> ea.schalte_led(EAModul.LED_ROT, 1)
+        ['LED0', 1]
+        >>> ea.schalte_led(EAModul.LED_ROT, 0)
+        ['LED0', 0]
+        >>> ea.schalte_led(EAModul.LED_GELB, 1)
+        ['LED1', 1]
+        """
+        self.__observer.append(beobachter)
+
+    def _notify(self, args):
+        """Alle registrierten Beobachter werden über eine Änderung
+        informiert."""
+
+        for b in self.__observer:
+            b.update(self, args)
+
+    def __taster0_gedrueckt(self):
+        self._notify(["Taster", 0])
+
+    def __taster1_gedrueckt(self):
+        self._notify(["Taster", 1])
+
     def taster_gedrueckt(self, num=0):
         """
         Liest den Wert des Tasters mit der gegebenen Nummer aus und gibt den
@@ -123,6 +183,7 @@ class EAModul:
         if 0 <= led_farbe < len(self._leds):
             if an_aus == 1 or an_aus == 0:
                 GPIO.output(self._leds[led_farbe], an_aus)
+                self._notify(["LED" + str(led_farbe), an_aus])
             else:
                 raise ValueError("Wert für an_aus muss 0 oder 1 sein.")
         else:

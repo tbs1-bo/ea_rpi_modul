@@ -71,6 +71,21 @@ class EAModulTest(unittest.TestCase):
         self.ea.taster_event_registrieren(0, m)
         self.ea.taster_event_registrieren(1, m)
 
+    def test_add_observer(self):
+
+        class Beobachter:
+            def update(self, eamodul, args):
+                if not isinstance(eamodul, EAModul):
+                    raise Exception()
+                if not args[0] == "LED" + str(EAModul.LED_ROT):
+                    raise Exception()
+                if not args[1] == 1:
+                    raise Exception()
+
+        beobachter = Beobachter()
+        self.ea.add_observer(beobachter)
+        self.ea.schalte_led(EAModul.LED_ROT, 1)
+
 
 if __name__ == '__main__':
     unittest.main()
