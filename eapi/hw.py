@@ -92,6 +92,8 @@ class EAModul:
         Die Methode wird über alle Veränderungen an der LED informiert. Dazu
         wird die übergebene Methode aufgerufen.
 
+        >>> from eapi.hw import EAModul
+
         >>> def update_rote_led(neuer_wert):
         ...    print("update: Status der roten LED hat sich geändert.")
         ...    print("Neuer Wert:", neuer_wert)
