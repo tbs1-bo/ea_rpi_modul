@@ -6,7 +6,7 @@ zur Verfügung gestellt.
 Die Klasse EAModulGui visualisiert das EAModul in einem Fenster, die Klasse
 EAModulCLI visualisiert es in der Konsole.
 
-Damit die Visualisierer zum Einsatz kommen kännen, wird ein EAModul benötigt,
+Damit die Visualisierer zum Einsatz kommen können, wird ein EAModul benötigt,
 dessen LEDs sie darstellen sollen. Daher erstellt man zunächst ein übliches
 EAModul.
 
@@ -22,6 +22,15 @@ blockierend und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
 
 Änderungen an den LEDs am Modul werden nun ebenfalls in der GUI dargestellt.
 
+Als weitere Option bietet sich eine Anzeige auf der Konsole an. Hier wird das
+EAModul in der Klasse EAModulCLI verpackt.
+
+>>> cli = EAModulCLI(ea)
+
+Nun würde ein Schalten der LEDs nicht nur auf dem Modul, sondern auch in der
+Konsole angezeigt werden.
+
+   ea.schalte_led(EAModul.LED_ROT, 1)   
 """
 
 from tkinter import Tk, Label, StringVar, YES, BOTH
