@@ -1,19 +1,22 @@
-"""GUI, die als Dummy für ein fehlendes EAModul dient.
+"""Visualisierungen für die LEDs des EAModuls.
 
-In diesem Paket wird eine GUI-Komponente zur Verfügung gestellt, die ein
-EA-Modul simuliert. Hiermit können Befehle an das Modul in einer Oberfläche
-simuliert werden.
+Dieses Paket stellt verschiedene Visualisierungen für die LEDs auf dem EAModul
+zur Verfügung gestellt.
 
-Dazu kommt die Klasse EAModulGui zum Einsatz, die ein EAModul benötigt, dessen
-LEDs sie darstellen soll. Daher erstellt man zunächst ein übliches EAModul.
+Die EAModulGui visualisiert das EAModul in einem Fenster, die Klasse EAModulCLI
+visualisiert es in der Konsole.
+
+Damit die Visualisierer zum Einsatz kommen kännen, wird ein EAModul benötigt,
+dessen LEDs sie darstellen sollen. Daher erstellt man zunächst ein übliches
+EAModul.
 
 >>> from eapi.gui import EAModulGui
 >>> from eapi.hw import EAModul
 
 >>> ea = EAModul()
 
-Nun kann eine GUI für das EA-Modul erstellt werden. Der Aufruf ist blockierend
-und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
+Nun kann eine z.B. GUI für das EA-Modul erstellt werden. Der Aufruf ist
+blockierend und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
 
    gui = EAModulGui(ea)
 
@@ -25,7 +28,37 @@ from tkinter import Tk, Label, StringVar, YES, BOTH
 from eapi.hw import EAModul
 
 
-class EAModulGui:
+class EAModulVisualisierer:
+    """
+    Klasse, die zum Visualisieren des EAModuls dient.
+    """
+    def __init__(self, eamodul):
+        self.ea = eamodul
+        self.ea.led_event_registrieren(EAModul.LED_ROT,
+                                       self._rote_led_update)
+        self.ea.led_event_registrieren(EAModul.LED_GELB,
+                                       self._gelbe_led_update)
+        self.ea.led_event_registrieren(EAModul.LED_GRUEN,
+                                       self._gruene_led_update)
+
+    def _rote_led_update(self, neuer_wert):
+        """Die Methode wird bei Änderungen der roten LED aufgerufen und muss
+        von Unterklasse überschrieben werden."""
+        raise NotImplementedError(
+            "Muss von einer Unterklasse überschrieben werden!")
+
+    def _gelbe_led_update(self, neuer_wert):
+        """siehe _rote_led_update"""
+        raise NotImplementedError(
+            "Muss von einer Unterklasse überschrieben werden!")
+
+    def _gruene_led_update(self, neuer_wert):
+        """siehe _gruene_led_update"""
+        raise NotImplementedError(
+            "Muss von einer Unterklasse überschrieben werden!")
+
+
+class EAModulGui(EAModulVisualisierer):
     """
     Eine GUI für ein EAModul mit zwei Tastern und drei LEDs.
     """
@@ -34,13 +67,8 @@ class EAModulGui:
         """
         Erstellt eine GUI für das gegebenen EAModul.
         """
-        self.ea = eamodul
-        self.ea.led_event_registrieren(EAModul.LED_ROT,
-                                       self.__rote_led_update)
-        self.ea.led_event_registrieren(EAModul.LED_GELB,
-                                       self.__gelbe_led_update)
-        self.ea.led_event_registrieren(EAModul.LED_GRUEN,
-                                       self.__gruene_led_update)
+        super().__init__(eamodul)
+
         # gui init
         fenster = Tk()
         fenster.title("EAModul - GUI")
@@ -93,20 +121,82 @@ class EAModulGui:
         else:
             return "lightgrey"
 
-    def __rote_led_update(self, neuer_wert):
+    def _rote_led_update(self, neuer_wert):
         self.var_rot.set(neuer_wert)
         self.lbl_led_rot.configure(bg=self.__farbe_fuer_ledwert(neuer_wert,
                                                                 "red"))
 
-    def __gelbe_led_update(self, neuer_wert):
+    def _gelbe_led_update(self, neuer_wert):
         self.var_gelb.set(neuer_wert)
         self.lbl_led_gelb.configure(bg=self.__farbe_fuer_ledwert(neuer_wert,
                                                                  "yellow"))
 
-    def __gruene_led_update(self, neuer_wert):
+    def _gruene_led_update(self, neuer_wert):
         self.var_gruen.set(neuer_wert)
         self.lbl_led_gruen.configure(bg=self.__farbe_fuer_ledwert(neuer_wert,
                                                                   "green"))
+
+
+class EAModulCLI(EAModulVisualisierer):
+    """Eine Klasse, die die LEDs eines EAModul in der Konsole visualisiert.
+
+    >>> ea = EAModul()
+    >>> cli = EAModulCLI(ea)
+
+    Wenn nun die LEDs geschaltet werden, wird dies durch eine bunte
+    Visualisierung auf der Konsole angezeigt.
+    """
+
+    # nach http://ascii-table.com/ansi-escape-sequences.php
+    ANSI_BG_BLACK = "\033[40m"
+    ANSI_BG_RED = "\033[41m"
+    ANSI_BG_GREEN = "\033[42m"
+    ANSI_BG_YELLOW = "\033[43m"
+    ANSI_FG_BLACK = "\033[30m"
+    ANSI_FG_WHITE = "\033[37m"
+
+    ANSI_ALL_ATTRIBUTES_OFF = "\033[0m"
+    ANSI_ERASE_DISPLAY = "\033[2J"
+    ANSI_CURSOR_HOME = "\033[;H"
+    ANSI_BOLD = "\033[1m"
+
+    def __init__(self, eamodul):
+        super().__init__(eamodul)
+
+        self.__leds = [0, 0, 0]
+
+    def _rote_led_update(self, neuer_wert):
+        self.__leds[0] = neuer_wert
+        self.__print_leds()
+
+    def _gelbe_led_update(self, neuer_wert):
+        self.__leds[1] = neuer_wert
+        self.__print_leds()
+
+    def _gruene_led_update(self, neuer_wert):
+        self.__leds[2] = neuer_wert
+        self.__print_leds()
+
+    def __print_leds(self):
+        farbnamen = [" rot  ", " gelb ", " grün "]
+        ansifarben = [self.ANSI_BG_RED, self.ANSI_BG_YELLOW, self.ANSI_BG_GREEN]
+
+        s = self.ANSI_ERASE_DISPLAY + self.ANSI_CURSOR_HOME + \
+            "LEDs: " + self.ANSI_BOLD + self.ANSI_FG_WHITE
+
+        for i in range(len(self.__leds)):
+
+            if self.__leds[i] == 1:
+                s += ansifarben[i]
+            else:
+                s += self.ANSI_BG_BLACK
+
+            s += farbnamen[i]
+
+        s += self.ANSI_ALL_ATTRIBUTES_OFF
+
+        print(s)
+
 
 __eamodul = None
 def __eamodul_erzeugen():
@@ -120,11 +210,64 @@ def __eamodul_erzeugen():
     return __eamodul
 
 
+def demo_cli():
+    """
+    Über den Taster 0 an dem Modul kann die gelbe LED gleichzeitig auf dem
+    Board und in der Konsole geschaltet werden. Mit dem Taster 1 kann die rote
+    LED auf die gleichte Weise gesteuert werden.
+    """
+    input(str(demo_taster.__doc__) + "\n(Enter für Start)")
+
+    def taster0_gedrueckt(_):
+        ea = __eamodul_erzeugen()
+        ea.schalte_led(EAModul.LED_GELB, ea.taster_gedrueckt(0))
+
+    def taster1_gedrueckt(_):
+        ea = __eamodul_erzeugen()
+        ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(1))
+
+    ea = __eamodul_erzeugen()
+    ea.taster_event_registrieren(0, taster0_gedrueckt)
+    ea.taster_event_registrieren(1, taster1_gedrueckt)
+
+    EAModulCLI(ea)
+
+    ea.cleanup()
+
+
+def demo_cli_blinken():
+    """
+    Das Demo lässt die LEDs kurz blinken und visualisiert dies zusätzlich auf
+    der Konsole.
+    """
+    import time
+
+    input(str(demo_cli_blinken.__doc__) + "\n(Enter)")
+    ea = EAModul()
+    EAModulCLI(ea)
+
+    ea.schalte_led(EAModul.LED_ROT, 1)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_ROT, 0)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_ROT, 1)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_GELB, 1)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_GELB, 0)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_GELB, 1)
+    time.sleep(0.5)
+    ea.schalte_led(EAModul.LED_GRUEN, 1)
+
+    ea.cleanup()
+
+
 def demo_taster():
     """
     Über den Taster 0 an dem Modul kann die gelbe LED gleichzeitig auf dem
-    Board und in der GUI geschaltet werden. Mit dem Taster 1 kann die rote LED auf die
-    gleichte Weise gesteuert werden.
+    Board und in der GUI geschaltet werden. Mit dem Taster 1 kann die rote LED
+    auf die gleichte Weise gesteuert werden.
     """
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
@@ -150,9 +293,15 @@ def main():
     """
     Hauptfunktion, die bei Start des Moduls ausgeführt wird.
     """
-    demo = input("Welches Demo soll gestartet werden: demo_taster ")
+    demo = input("Welches Demo soll gestartet werden?: " +
+                 "demo_taster, demo_cli, demo_cli_blinken\n")
+
     if demo == "demo_taster":
         demo_taster()
+    elif demo == "demo_cli":
+        demo_cli()
+    elif demo == "demo_cli_blinken":
+        demo_cli_blinken()
 
 
 if __name__ == '__main__':
