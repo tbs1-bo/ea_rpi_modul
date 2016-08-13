@@ -131,7 +131,7 @@ def demo_taster():
 
     def taster1_gedrueckt(_):
         ea = __eamodul_erzeugen()
-        ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(0))
+        ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(1))
 
     ea = __eamodul_erzeugen()
     ea.taster_event_registrieren(0, taster0_gedrueckt)
