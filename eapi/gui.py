@@ -120,7 +120,8 @@ def __eamodul_erzeugen():
 def demo_taster():
     """
     Über den Taster 0 an dem Modul kann die gelbe LED gleichzeitig auf dem
-    Board und in der GUI geschaltet werden.
+    Board und in der GUI geschaltet werden. Mit dem Taster 1 kann die rote LED auf die
+    gleichte Weise gesteuert werden.
     """
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
@@ -128,8 +129,13 @@ def demo_taster():
         ea = __eamodul_erzeugen()
         ea.schalte_led(EAModul.LED_GELB, ea.taster_gedrueckt(0))
 
+    def taster1_gedrueckt(_):
+        ea = __eamodul_erzeugen()
+        ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(0))
+
     ea = __eamodul_erzeugen()
     ea.taster_event_registrieren(0, taster0_gedrueckt)
+    ea.taster_event_registrieren(0, taster1_gedrueckt)
 
     # GUI startet und blockiert bis zum Ende
     EAModulGui(ea)
