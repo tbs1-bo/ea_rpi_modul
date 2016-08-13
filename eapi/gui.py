@@ -3,8 +3,8 @@
 Dieses Paket stellt verschiedene Visualisierungen für die LEDs auf dem EAModul
 zur Verfügung gestellt.
 
-Die EAModulGui visualisiert das EAModul in einem Fenster, die Klasse EAModulCLI
-visualisiert es in der Konsole.
+Die Klasse EAModulGui visualisiert das EAModul in einem Fenster, die Klasse
+EAModulCLI visualisiert es in der Konsole.
 
 Damit die Visualisierer zum Einsatz kommen kännen, wird ein EAModul benötigt,
 dessen LEDs sie darstellen sollen. Daher erstellt man zunächst ein übliches
@@ -15,7 +15,7 @@ EAModul.
 
 >>> ea = EAModul()
 
-Nun kann eine z.B. GUI für das EA-Modul erstellt werden. Der Aufruf ist
+Nun kann z.B. eine GUI für das EA-Modul erstellt werden. Der Aufruf ist
 blockierend und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
 
    gui = EAModulGui(ea)
