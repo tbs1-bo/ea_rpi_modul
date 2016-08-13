@@ -1,24 +1,27 @@
-"""
-GUI, die als Dummy für ein fehlendes EAModul dient.
+"""GUI, die als Dummy für ein fehlendes EAModul dient.
 
-Die Klasse ist noch in Entwicklung und sollte noch nicht verwendet werden.
+In diesem Paket wird eine GUI-Komponente zur Verfügung gestellt, die ein
+EA-Modul simuliert. Hiermit können Befehle an das Modul in einer Oberfläche
+simuliert werden.
 
-Mit einem EAModul kann kann die GUI initialisiert werden. Daher benötigen wir
-zunächst ein übliches EAModul.
+Dazu kommt die Klasse EAModulGui zum Einsatz, die ein EAModul benötigt, dessen
+LEDs sie darstellen soll. Daher erstellt man zunächst ein übliches EAModul.
 
 >>> from eapi.gui import EAModulGui
 >>> from eapi.hw import EAModul
 
 >>> ea = EAModul()
 
-Nun kann eine GUI für das EA-Modul erstellt werden.
+Nun kann eine GUI für das EA-Modul erstellt werden. Der Aufruf ist blockierend
+und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
 
    gui = EAModulGui(ea)
 
 Änderungen an den LEDs am Modul werden nun ebenfalls in der GUI dargestellt.
+
 """
 
-from tkinter import *  # Tk, Button, Label, StringVar
+from tkinter import Tk, Label, StringVar, YES, BOTH
 from eapi.hw import EAModul
 
 
