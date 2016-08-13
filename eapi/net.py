@@ -102,6 +102,14 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
 class EAModulServer(socketserver.UDPServer):
     """Ein UDPServer für ein EA-Modul.
 
+    Er lässt sich unter Angabe von hostname und Portnummer erzeugen.
+
+    >>> easerver = EAModulServer("localhost", 9999)
+
+    Anschließend kann er mit dem folgenden Aufruf gestartet werden
+
+      easerver.serve_forever()
+    
     Ein an den Server gesendeter Request wird vom EAModulUDPHandler
     verarbeitet.
     """
@@ -131,8 +139,13 @@ class EAModulClient:
 
     Nun kann er mit dem Server kommunizieren und die dortigen LEDs ansteuern.
 
+    >>> client.sende(rot=1, gelb=0, gruen=1)
+    >>> client.sende(rot=0, gelb=0, gruen=1)
+
+    Die Methoden lassen sich auf kürzer aufrufen.
+
     >>> client.sende(1, 0, 1)
-    >>> client.sende(0, 0, 1)
+    >>> client.sende(0, 0, 1)    
 
     Wenn ein Wert ungleich 0 oder 1 gesendet wird, so wird er ignoriert und die
     LED behält ihren Wert bei.
