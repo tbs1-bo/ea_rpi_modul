@@ -188,6 +188,10 @@ class EAModul:
         >>> ea_modul.taster_event_registrieren(0, taster0_gedrueckt)
         >>> ea_modul.cleanup()
         """
+        # TODO vereinheitlichen mit led_event_reg.: Liste mit Methoden
+        # zusätzlich zwei Methoden, eine für jeden Taster, die bei Event
+        # aufgerugen werden.
+
         if taster_nr < 0 or taster_nr >= len(self._taster):
             raise ValueError("Falsche Taster Nummer." + taster_nr)
 
