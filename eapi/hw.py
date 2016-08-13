@@ -60,16 +60,29 @@ class EAModul:
     def __init__(self, pin_taster0=29, pin_taster1=31,
                  pin_led_rot=33, pin_led_gelb=35, pin_led_gruen=37):
         """
-        Die PINs des Moduls werden konfiguriert.
+        Das Modul wird mit den gegebenen Pins konfiguriert.
 
-        Pins der LED werden als Ausgänge, und Pins der Taster als Eingänge
+        Pins der LEDs werden als Ausgänge und Pins der Taster als Eingänge
         konfiguriert. Wenn keine PINS angegeben werden, werden die PINs
         oberhalb des GND Pins links unten verwendet.
 
         >>> from eapi.hw import EAModul
 
-        >>> ea = EAModul()
-        >>> ea.cleanup()
+        Wenn keine Werte angegeben werden, werden die Standard-Pins verwendet.
+
+        >>> ea1 = EAModul()
+        >>> ea1.cleanup()
+
+        Bei einer abweichenden Verdrahtung können die Pins angegeben werden.
+
+        >>> ea2 = EAModul(29, 31, 33, 35, 37)
+
+        Um den Quelltext übersichtlicher zu gestalten, können die Pins
+        direkt bezeichnet werden.
+
+        >>> ea2 = EAModul(pin_taster0=29, pin_taster1=31, pin_led_rot=33,
+        ...               pin_led_gelb=35, pin_led_gruen=37)
+        >>> ea2.cleanup()
         """
         GPIO.setmode(GPIO.BOARD)
 
@@ -80,10 +93,10 @@ class EAModul:
         GPIO.setup(self._leds, GPIO.OUT)
 
         # Observer initialisieren
-        self.__observer = dict()
-        self.__observer[EAModul.LED_ROT] = []
-        self.__observer[EAModul.LED_GELB] = []
-        self.__observer[EAModul.LED_GRUEN] = []
+        self.__observer_leds = dict()
+        self.__observer_leds[EAModul.LED_ROT] = []
+        self.__observer_leds[EAModul.LED_GELB] = []
+        self.__observer_leds[EAModul.LED_GRUEN] = []
 
     def led_event_registrieren(self, led_farbe, methode):
         """Registriert eine Methode, die ausgeführt wird, sobald die
@@ -114,13 +127,13 @@ class EAModul:
 
         >>> ea.cleanup()
         """
-        self.__observer[led_farbe].append(methode)
+        self.__observer_leds[led_farbe].append(methode)
 
-    def _notify(self, led_farbe, neuer_wert):
+    def _notify_leds(self, led_farbe, neuer_wert):
         """Alle registrierten Beobachter werden über eine Änderung
         informiert."""
 
-        for methode in self.__observer[led_farbe]:
+        for methode in self.__observer_leds[led_farbe]:
             methode(neuer_wert)
 
     def taster_gedrueckt(self, num=0):
@@ -167,7 +180,7 @@ class EAModul:
         if 0 <= led_farbe < len(self._leds):
             if an_aus == 1 or an_aus == 0:
                 GPIO.output(self._leds[led_farbe], an_aus)
-                self._notify(led_farbe, an_aus)
+                self._notify_leds(led_farbe, an_aus)
             else:
                 raise ValueError("Wert für an_aus muss 0 oder 1 sein.")
         else:
@@ -218,6 +231,10 @@ class DimmbaresEAModul(EAModul):
 
     >>> from eapi.hw import DimmbaresEAModul
     >>> ea = DimmbaresEAModul()
+
+    Nach dem Erstellen eines Moduls, können die LEDs auch mit Werten zwischen
+    0.0 und 1.0 geschaltet werden. Sie leuchten dann weniger hell.
+
     >>> ea.schalte_led(EAModul.LED_ROT, 0.5)
     >>> ea.schalte_led(EAModul.LED_GELB, 0.8)
     >>> ea.schalte_led(EAModul.LED_GRUEN, 0.2)
@@ -275,7 +292,7 @@ class DimmbaresEAModul(EAModul):
                 # LED dimmen
                 pwm = self.__pwms[led_farbe]
                 pwm.ChangeDutyCycle(helligkeit*100)
-                self._notify(led_farbe, helligkeit)
+                self._notify_leds(led_farbe, helligkeit)
 
             else:
                 raise ValueError("Wert für Helligkeit muss zwischen 0 und 1 liegen.")
