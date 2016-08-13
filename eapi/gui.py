@@ -135,7 +135,7 @@ def demo_taster():
 
     ea = __eamodul_erzeugen()
     ea.taster_event_registrieren(0, taster0_gedrueckt)
-    ea.taster_event_registrieren(0, taster1_gedrueckt)
+    ea.taster_event_registrieren(1, taster1_gedrueckt)
 
     # GUI startet und blockiert bis zum Ende
     EAModulGui(ea)
