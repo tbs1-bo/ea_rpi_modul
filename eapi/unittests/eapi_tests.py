@@ -4,6 +4,7 @@ dessen Unterpaketen.
 
 import unittest
 from eapi.hw import EAModul, DimmbaresEAModul
+from eapi.gui import EAModulCLI
 
 
 class DimmbaresEAModulTest(unittest.TestCase):
@@ -89,6 +90,18 @@ class EAModulTest(unittest.TestCase):
         self.ea.led_event_registrieren(EAModul.LED_ROT, update_rote_led)
         self.ea.schalte_led(EAModul.LED_ROT, 1)
 
+
+class EAModulCLITest(unittest.TestCase):
+    def test_schalte_led(self):
+        ea = EAModul()
+        EAModulCLI(ea)
+
+        ea.schalte_led(EAModul.LED_ROT, 0)
+        ea.schalte_led(EAModul.LED_ROT, 1)
+        ea.schalte_led(EAModul.LED_GELB, 0)
+        ea.schalte_led(EAModul.LED_GELB, 1)
+        ea.schalte_led(EAModul.LED_GRUEN, 0)
+        ea.schalte_led(EAModul.LED_GRUEN, 1)
 
 if __name__ == '__main__':
     unittest.main()
