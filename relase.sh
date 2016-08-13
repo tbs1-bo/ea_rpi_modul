@@ -5,9 +5,9 @@ python3 setup.py test
 echo Unit Tests OK?
 read
 
-for f in net.py hw.py;
+for f in eapi/*py;
 do
-	python3 -m doctest eapi/$f
+	python3 -m doctest $f
 	echo Doctests $f ok?
 	read
 done
