@@ -33,13 +33,13 @@ class EAModulVisualisierer:
     Klasse, die zum Visualisieren des EAModuls dient.
     """
     def __init__(self, eamodul):
-        self.ea = eamodul
-        self.ea.led_event_registrieren(EAModul.LED_ROT,
-                                       self._rote_led_update)
-        self.ea.led_event_registrieren(EAModul.LED_GELB,
-                                       self._gelbe_led_update)
-        self.ea.led_event_registrieren(EAModul.LED_GRUEN,
-                                       self._gruene_led_update)
+        self._ea = eamodul
+        self._ea.led_event_registrieren(EAModul.LED_ROT,
+                                        self._rote_led_update)
+        self._ea.led_event_registrieren(EAModul.LED_GELB,
+                                        self._gelbe_led_update)
+        self._ea.led_event_registrieren(EAModul.LED_GRUEN,
+                                        self._gruene_led_update)
 
     def _rote_led_update(self, neuer_wert):
         """Die Methode wird bei Änderungen der roten LED aufgerufen und muss
@@ -105,10 +105,10 @@ class EAModulGui(EAModulVisualisierer):
         fenster.mainloop()
 
     def __taster0_gedrueckt(self):
-        self.ea.schalte_led(EAModul.LED_ROT, True)
+        self._ea.schalte_led(EAModul.LED_ROT, True)
 
     def __taster1_gedrueckt(self):
-        self.ea.schalte_led(EAModul.LED_ROT, False)
+        self._ea.schalte_led(EAModul.LED_ROT, False)
 
     def __farbe_fuer_ledwert(self, led_wert, default_wert):
         """Bestimmt für den led_wert eine Farbe.
@@ -159,6 +159,8 @@ class EAModulCLI(EAModulVisualisierer):
     ANSI_ERASE_DISPLAY = "\033[2J"
     ANSI_CURSOR_HOME = "\033[;H"
     ANSI_BOLD = "\033[1m"
+    ANSI_SAVE_CURSOR = "\033[s"
+    ANSI_RESTORE_CURSOR = "\033[u"
 
     def __init__(self, eamodul):
         super().__init__(eamodul)
@@ -272,12 +274,12 @@ def demo_taster():
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
     def taster0_gedrueckt(_):
-        ea = __eamodul_erzeugen()
-        ea.schalte_led(EAModul.LED_GELB, ea.taster_gedrueckt(0))
+        _ea = __eamodul_erzeugen()
+        _ea.schalte_led(EAModul.LED_GELB, ea.taster_gedrueckt(0))
 
     def taster1_gedrueckt(_):
-        ea = __eamodul_erzeugen()
-        ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(1))
+        _ea = __eamodul_erzeugen()
+        _ea.schalte_led(EAModul.LED_ROT, ea.taster_gedrueckt(1))
 
     ea = __eamodul_erzeugen()
     ea.taster_event_registrieren(0, taster0_gedrueckt)
