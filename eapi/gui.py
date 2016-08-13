@@ -3,7 +3,8 @@ GUI, die als Dummy für ein fehlendes EAModul dient.
 
 Die Klasse ist noch in Entwicklung und sollte noch nicht verwendet werden.
 
-Mit einem EAModul kann kann die GUI initialisiert werden.
+Mit einem EAModul kann kann die GUI initialisiert werden. Daher benötigen wir
+zunächst ein übliches EAModul.
 
 >>> from eapi.gui import EAModulGui
 >>> from eapi.hw import EAModul
@@ -14,6 +15,7 @@ Nun kann eine GUI für das EA-Modul erstellt werden.
 
    gui = EAModulGui(ea)
 
+Änderungen an den LEDs am Modul werden nun ebenfalls in der GUI dargestellt.
 """
 
 from tkinter import *  # Tk, Button, Label, StringVar
@@ -106,8 +108,8 @@ class EAModulGui:
 
 def demo_taster():
     """
-    Über den Taster 0 an dem Modul kann die gelbe LED auf dem Board und
-    gleichzeitig in der GUI geschaltet werden.
+    Über den Taster 0 an dem Modul kann die gelbe LED gleichzeitig auf dem
+    Board und in der GUI geschaltet werden.
     """
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
