@@ -34,8 +34,7 @@ geschaltet werden soll: an (1) oder aus (0). Wenn die LED nicht geschaltet
 werden soll, ist der Wert beliebig.
 
 Die Bitsequenz ?? 0? 11 10 (? bedeutet 'beliebig') belässt die rote LED in
-ihrem bisherigen Zustandschaltet, schaltet die gelbe LED an und die grüne LED
-aus.
+ihrem bisherigen Zustand, schaltet die gelbe LED an und die grüne LED aus.
 
 Mit Netcat und echo kann ein Byte einfach an einen Testserver wie folgt
 gesendet werden:
