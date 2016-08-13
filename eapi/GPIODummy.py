@@ -37,6 +37,7 @@ def __alle_pins_ausgeben():
         s += "{pin}:{on} ".format(pin=p, on=__PINS[p])
     log.debug(s)
 
+
 def input(pin):
     """Dummy Methode, die zufällig True oder False zurückgibt."""
     r = random.randint(0, 1)
@@ -46,9 +47,11 @@ def input(pin):
     else:
         return False
         
-def setmode(board):    
+
+def setmode(board):
     """Macht nichts."""
     log.info("Setze boardmode auf " + str(board))
+
 
 def setup(pin, in_out):
     """Macht nichts."""    
@@ -61,17 +64,21 @@ def setup(pin, in_out):
 
     __PINS[pin] = False
 
+
 def output(pin, an_aus):
     global __PINS
     log.info("Output {a} an pin {p}".format(a=an_aus, p=pin))
     __PINS[pin] = an_aus
     __alle_pins_ausgeben()
 
+
 def cleanup():
     log.info("cleanup")
 
+
 def add_event_detect(pin, flanke):
     log.info("Event registrieren für Pin " + str(pin))
+
 
 def add_event_callback(pin, methode):
     log.info("Registriere Callback Methode {m} für Pin {p}".format(m=methode, p=pin))
