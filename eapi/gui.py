@@ -105,6 +105,17 @@ class EAModulGui:
         self.lbl_led_gruen.configure(bg=self.__farbe_fuer_ledwert(neuer_wert,
                                                                   "green"))
 
+__eamodul = None
+def __eamodul_erzeugen():
+    """Hilfsmethode, die ein EAModul erstellt, wenn noch keines vorhanden ist.
+    """
+    global __eamodul
+
+    if __eamodul is None:
+        __eamodul = EAModul()
+
+    return __eamodul
+
 
 def demo_taster():
     """
@@ -114,10 +125,10 @@ def demo_taster():
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
     def taster0_gedrueckt(_):
-        global ea
+        ea = __eamodul_erzeugen()
         ea.schalte_led(EAModul.LED_GELB, ea.taster_gedrueckt(0))
 
-    ea = EAModul()
+    ea = __eamodul_erzeugen()
     ea.taster_event_registrieren(0, taster0_gedrueckt)
 
     # GUI startet und blockiert bis zum Ende
