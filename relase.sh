@@ -21,6 +21,7 @@ echo Dokumentation erstellen und hochladen
 doxygen
 python3 setup.py upload_docs
 
-echo git-Tag erstellen?
+echo git commit und git-Tag für den commit erstellen?
 read
+git commit -a
 git tag -a v`python3 -c 'import eapi;print(eapi.VERSION)'`
