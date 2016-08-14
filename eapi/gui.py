@@ -227,6 +227,7 @@ def demo_cli():
     Board und in der Konsole geschaltet werden. Mit dem Taster 1 kann die rote
     LED auf die gleichte Weise gesteuert werden.
     """
+    import time
     input(str(demo_taster.__doc__) + "\n(Enter für Start)")
 
     def taster0_gedrueckt(_):
@@ -243,7 +244,12 @@ def demo_cli():
 
     EAModulCLI(ea)
 
-    ea.cleanup()
+    try:
+        while True:
+            time.sleep(0.2)
+
+    except KeyboardInterrupt:
+        ea.cleanup()
 
 
 def demo_cli_blinken():
