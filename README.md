@@ -52,7 +52,7 @@ Klasse EAModul
 
 Mit Hilfe der Klasse 
 [EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html) 
-können die Taster und LED einfach angesteuert bzw. ausgelesen werden.
+können die Taster und LEDs einfach angesteuert bzw. ausgelesen werden.
 
     from eapi.hw import EAModul           #0
 
@@ -69,7 +69,7 @@ können die Taster und LED einfach angesteuert bzw. ausgelesen werden.
 
 **#1** Bei der Initialisierung müssen die auf dem RaspberryPi verwendeten PINs
 angegeben werden: zuerst die beiden Pins für die Taster, es folgen drei
-Pins für die LED.
+Pins für die LEDs.
 
 **#2** Hier wird die rote LED erst ein-
 
@@ -139,9 +139,13 @@ Hilfe erhalten
 
 Der Quelltext ist gut dokumentiert. Man kann sich die Hilfe der Klasse
 `EAModul` innerhalb des Python Interpreters mit dem Befehl `help(EAModul)`
-anzeigen lassen. Auf der Kommandozeile hilft der Befehl `pydoc3` weiter. Mit
-`pydoc3 eapi.hw` oder `python3 -m pydoc eapi.hw` wird die Dokumentation
-für das Modul angezeigt. 
+anzeigen lassen.
+
+Auf der Kommandozeile unter Linux hilft der Befehl `pydoc3` weiter. Mit
+`pydoc3 eapi.hw` oder wird die Dokumentation für das Modul angezeigt.
+
+Unter Windows ist der Befehl pydoc3 nicht standardmäßig vorhanden. Hier hilft
+der Aufruf `python3 -m pydoc eapi.hw` weiter.
 
 Eine HTML-Version der Dokumentation kann unter der Adresse
 http://pythonhosted.org/eapi/ abgerufen werden.
