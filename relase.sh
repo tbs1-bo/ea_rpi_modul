@@ -20,3 +20,7 @@ read
 echo Dokumentation erstellen und hochladen
 doxygen
 python3 setup.py upload_docs
+
+echo git-Tag erstellen?
+read
+git tag -a v`python3 -c 'import eapi;print(eapi.VERSION)'`
