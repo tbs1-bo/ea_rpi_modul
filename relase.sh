@@ -17,9 +17,9 @@ python3 setup.py sdist upload
 echo Release OK?
 read
 
-#echo Dokumentation erstellen und hochladen
-#doxygen
-#python3 setup.py upload_docs
+echo Dokumentation erstellen und hochladen
+doxygen
+python3 setup.py upload_docs
 
 echo git commit?
 read
