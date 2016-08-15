@@ -1,18 +1,24 @@
 ea_rpi_modul
 ============
 
-Bei dem Projekt handelt es sich um eine Python Bibliothek für ein E/A-Modul
-(Eingabe-Ausgabe-Modul) für den Raspberry Pi.
+Bei dem Projekt handelt es sich um eine Kombination aus einer Hardware 
+(Eingabe-Ausgabe-Modul) bestehend aus zwei Tastern und drei LEDs sowie 
+einer Python Bibliothek zur Ansteuerung der Hardware für den Raspberry Pi.
 
 Informationen zur [Hardware](hardware) befinden sich auf der verlinkten Seite.
 
 Installation
 ============
 
-Das Modul liegt im Python-Package-Index (PyPi) unter dem Namen
-[eapi](https://pypi.python.org/pypi/eapi). Es kann mit `sudo pip3 install eapi`
-installiert werden. Wenn die Installation nur lokal für einen User erfolgen
-soll, heißt der Befehl `pip3 install --user eapi`.
+Das Modul befindet sich im Python-Package-Index (PyPi) unter dem Namen
+[eapi](https://pypi.python.org/pypi/eapi). Es kann mit dem folgenden Befehl
+installiert werden:
+
+    sudo pip3 install eapi
+
+Wenn die Installation nur lokal für einen User erfolgen soll, heißt der Befehl 
+
+    pip3 install --user eapi
 
 Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
 ohne `sudo` ausgeführt werden.
@@ -42,19 +48,20 @@ Upgrade
 -------
 
 Wenn die Bibliothek bereits installiert ist aber nur in einer älteren Version
-vorliegt, kann sie mit dem Befehl `sudo pip3 install --upgrade eapi` auf den
-neuesten Stand gebracht werden.
+vorliegt, kann sie mit dem folgenden Befehl auf den neuesten Stand gebracht werden.
+
+    sudo pip3 install --upgrade eapi
 
 Klasse EAModul
 ==============
 
 ![Klassendiagramm (automatisch generiert mit pyreverse)](./klassendiagramm.png)
 
-Mit Hilfe der Klasse 
-[EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html) 
-können die Taster und LEDs einfach angesteuert bzw. ausgelesen werden.
+Die [EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html)
+dient der Ansteuerung des Moduls. Mit ihr können die Taster ausgelesen und die 
+LEDs an- oder  bzw. ausgeschaltet werden.
 
-    from eapi.hw import EAModul           #0
+    from eapi.hw import EAModul         #0
 
     ea = EAModul(29, 31, 33, 35, 37)    #1
     ea.schalte_led(EAModul.LED_ROT, 1)  #2
@@ -65,11 +72,12 @@ können die Taster und LEDs einfach angesteuert bzw. ausgelesen werden.
         
     ea.cleanup()                        #5
 
-**#0** Aus dem Modul `eapi.hw` wird die Klasse `EAModul` importiert.
+**#0** Aus dem Modul `eapi.hw` wird die Klasse `EAModul` importiert, damit sie
+in den folgenden Anweisungen verwendet werden kann.
 
 **#1** Bei der Initialisierung müssen die auf dem RaspberryPi verwendeten PINs
-angegeben werden: zuerst die beiden Pins für die Taster, es folgen drei
-Pins für die LEDs.
+angegeben werden: zuerst die beiden Pins für die Taster (29 und 31), es folgen 
+drei Pins für die LEDs (33, 35 und 37).
 
 **#2** Hier wird die rote LED erst ein-
 
@@ -103,14 +111,14 @@ Loslassen des Tasters wieder ausgeschaltet werden.
 
     try:
         while not ea_modul.taster_gedrueckt(1):              #4
-	        ea_modul.schalte_led(EAModul.LED_ROT, 1)
+            ea_modul.schalte_led(EAModul.LED_ROT, 1)
             time.sleep(0.2)
-		    ea_modul.schalte_led(EAModul.LED_ROT, 0)
+            ea_modul.schalte_led(EAModul.LED_ROT, 0)
             time.sleep(0.2)
 
             ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
             time.sleep(0.5)
-		    ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
+            ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
             time.sleep(0.2)
 
     except KeyboardInterrupt:
@@ -120,12 +128,13 @@ Loslassen des Tasters wieder ausgeschaltet werden.
 
 
 
-**#1** Das Modul wird mit der Standardbeschaltung initialisiert. Hierbei sind
+**#1** Das Modul wird mit der Standardbeschaltung initialisiert, wenn 
+keine Werte für die Pins angegeben werden. Hierbei sind
 die PINs der Reihe nach an den Pins 29, 31, 33, 35 und 37 angeschlossen.
 
-
-**#2** Die Methode wird aufgerufen, sobald der Taster 0 gedrückt wird. Damit
-dies passiert, wird sie gleich dafür registriert.
+**#2** Es wird eine Methode deklariert, die  aufgerufen werden soll, 
+sobald der Taster 0 gedrückt wird. Damit dies passiert, wird sie 
+gleich dafür registriert.
 
 **#3** Die Methode wird für den Taster 0 registriert und aufgerufen, sobald
 der Taster gedrückt wird.
