@@ -17,12 +17,14 @@ python3 setup.py sdist upload
 echo Release OK?
 read
 
-echo Dokumentation erstellen und hochladen
-doxygen
-python3 setup.py upload_docs
+#echo Dokumentation erstellen und hochladen
+#doxygen
+#python3 setup.py upload_docs
 
-echo git commit und git-Tag für den commit erstellen?
+echo git commit?
 read
 git commit -a
+
+echo Tag erstellen und pushen?
 git tag -a v`python3 -c 'import eapi;print(eapi.VERSION)'`
 git push --tags
