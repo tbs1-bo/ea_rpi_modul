@@ -155,7 +155,7 @@ class EAModulClient:
     >>> client.sende(rot=1, gelb=0, gruen=1)
     >>> client.sende(rot=0, gelb=0, gruen=1)
 
-    Die Methoden lassen sich auf kürzer aufrufen.
+    Die Methoden lassen sich auch kürzer aufrufen.
 
     >>> client.sende(1, 0, 1)
     >>> client.sende(0, 0, 1)    
