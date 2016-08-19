@@ -46,10 +46,23 @@ Escapesequenz verschickt, die Option -n besagt, dass kein Zeilenumbruch
 gesendet werden soll - also nur die angegebenen Bytes. Die Option -4 von nc
 sendet ein IPv4-Paket, das als UDP-Paket (-u) verschickt werden soll.
 
-Das Modul enthält auch einen einfachen Konsolenclient, der über die Konsole
+Das Modul enthält einen einfachen Konsolenclient, der über die Konsole
 gestartet werden kann:
 
   $ python3 -m eapi.net startclient
+
+Mit dem Python-Modul socket kann ein Packet in Python selbst erstellt und an
+den Server gesendet werden.
+
+>>> import socket
+>>> client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+>>> daten = bytes([0xe])
+
+Die zu sendenen Daten bestehen aus nur einem Byte.
+
+>>> client.sendto(daten, ("localhost", 9999))
+1
+
 
 """
 
@@ -68,6 +81,7 @@ class EAModulUDPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         """Der UDP-Handler bearbeitet UDP-Requests gemäß der Modulbeschreibung 
         (s.o.)."""
+        print("request erhalten!", self.request)
 
         # statisches Modul initaisieren, falls noch nicht geschehen
         if EAModulUDPHandler.eamodul is None:
