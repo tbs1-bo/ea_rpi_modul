@@ -367,6 +367,12 @@ def main():
 
     Hierüber können verschiedene Demoprogramme gestartet werden.
     """
+    # TODO Democlient für das Debugging ergänzen: Taster0->rote LED,
+    # Taster1->gelbe LED, Taster01->grüne LED. LEDs werden über Konsole
+    # visualisiert. Oder: Verschiedene Modi können über einen curses-client
+    # ausgewählt werden.
+    #
+    # https://docs.python.org/3/howto/curses.html
 
     command = input("Befehl angeben: demo_led_taster demo_dimmen: ")
     if command == "demo_dimmen":
