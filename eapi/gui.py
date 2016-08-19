@@ -25,7 +25,7 @@ blockierend und zeigt ein Fenster mit drei LEDs (rot, gelb und grün) an.
 Als weitere Option bietet sich eine Anzeige auf der Konsole an. Hier wird das
 EAModul in der Klasse EAModulCLI verpackt.
 
->>> cli = EAModulCLI(ea)
+>>> ea_konsole = EAModulKonsole(ea)
 
 Nun würde ein Schalten der LEDs nicht nur auf dem Modul, sondern auch in der
 Konsole angezeigt werden.
@@ -146,11 +146,11 @@ class EAModulGui(EAModulVisualisierer):
                                                                   "green"))
 
 
-class EAModulCLI(EAModulVisualisierer):
+class EAModulKonsole(EAModulVisualisierer):
     """Eine Klasse, die die LEDs eines EAModul in der Konsole visualisiert.
 
     >>> ea = EAModul()
-    >>> cli = EAModulCLI(ea)
+    >>> ea_konsole = EAModulKonsole(ea)
 
     Wenn nun die LEDs geschaltet werden, wird dies durch eine bunte
     Visualisierung auf der Konsole angezeigt.
@@ -242,7 +242,7 @@ def demo_cli():
     ea.taster_event_registrieren(0, taster0_gedrueckt)
     ea.taster_event_registrieren(1, taster1_gedrueckt)
 
-    EAModulCLI(ea)
+    EAModulKonsole(ea)
 
     try:
         while True:
@@ -261,7 +261,7 @@ def demo_cli_blinken():
 
     input(str(demo_cli_blinken.__doc__) + "\n(Enter)")
     ea = EAModul()
-    EAModulCLI(ea)
+    EAModulKonsole(ea)
 
     ea.schalte_led(EAModul.LED_ROT, 1)
     time.sleep(0.5)
