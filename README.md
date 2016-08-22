@@ -6,6 +6,8 @@ Bei dem Projekt handelt es sich um eine Kombination aus einer Hardware
 einer Python Bibliothek zur Ansteuerung der Hardware für den Raspberry Pi.
 
 Informationen zur [Hardware](hardware) befinden sich auf der verlinkten Seite.
+An dieser Stelle wird die Bibliothek zur Ansteuerung des Moduls genauer
+beschrieben.
 
 Installation
 ============
