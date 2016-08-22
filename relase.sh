@@ -19,7 +19,7 @@ read
 
 echo Dokumentation erstellen und hochladen
 doxygen
-python3 setup.py upload_docs
+python3 setup.py upload_docs --upload-dir doc/html
 
 echo git commit?
 read
