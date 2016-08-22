@@ -26,6 +26,15 @@ Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
 ohne `sudo` ausgeführt werden.
 
 
+Upgrade
+-------
+
+Wenn die Bibliothek bereits installiert ist aber nur in einer älteren Version
+vorliegt, kann sie mit dem folgenden Befehl auf den neuesten Stand gebracht werden.
+
+    sudo pip3 install --upgrade eapi
+
+
 Installation aus den Quellen
 ----------------------------
 
@@ -45,14 +54,6 @@ Wenn das Paket nur für den aktuellen Benutzer installiert werden soll, muss
 die Option `--user` an `install` übergeben werden. Bei einer systemweiten
 Installation muss der letzte Befehl mit `sudo` ausgeführt werden.
 
-
-Upgrade
--------
-
-Wenn die Bibliothek bereits installiert ist aber nur in einer älteren Version
-vorliegt, kann sie mit dem folgenden Befehl auf den neuesten Stand gebracht werden.
-
-    sudo pip3 install --upgrade eapi
 
 Klasse EAModul
 ==============
