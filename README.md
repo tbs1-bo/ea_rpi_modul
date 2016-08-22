@@ -60,9 +60,11 @@ Klasse EAModul
 
 ![Klassendiagramm (automatisch generiert mit pyreverse)](./klassendiagramm.png)
 
-Die [EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html)
+Die Klasse [EAModul](http://pythonhosted.org/eapi/classeapi_1_1hw_1_1EAModul.html)
 dient der Ansteuerung des Moduls. Mit ihr können die Taster ausgelesen und die 
 LEDs an- oder  bzw. ausgeschaltet werden.
+
+Der folgende Quelltext demonstriert eine typische Verwendung der Klasse.
 
     from eapi.hw import EAModul         #0
 
