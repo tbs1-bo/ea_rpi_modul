@@ -66,6 +66,8 @@ Die zu sendenen Daten bestehen aus nur einem Byte.
 
 """
 
+# TODO Modul sendet an MQTT-Broker: https://www.dinotools.de/2015/04/12/mqtt-mit-python-nutzen/
+
 import socket
 import socketserver
 from eapi.hw import EAModul
