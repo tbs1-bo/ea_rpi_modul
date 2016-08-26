@@ -161,6 +161,29 @@ class EAModul:
                 "Falsche Tasternummer. Muss zwischen 0 und {ln} liegen.".format(
                     ln=len(self._taster) - 1))
 
+    def toggle_led(self, led_farbe):
+        """Wechselt den Zustand der angegebenen LED von an nach aus - oder umgekehrt.
+
+        Schaltet die LED aus, wenn sie an war, oder an, wenn sie aus war.
+
+        >>> from eapi.hw import EAModul
+        >>> ea = EAModul()
+        >>> ea.schalte_led(EAModul.LED_ROT, 1)
+        
+        Nun ist die rote LED an.
+
+        >>> ea.toggle_led(EAModul.LED_ROT)
+
+        Nun ist die LED wieder aus.
+
+        >>> ea.toggle_led(EAModul.LED_ROT)
+        
+        Nun ist sie wieder an.
+        """
+        # TODO noch nicht getestet.
+        alter_wert = GPIO.input(self._leds[led_farbe])
+        self.schalte_led(led_farbe, 1 - alter_wert)
+
     def schalte_led(self, led_farbe, an_aus):
         """Schalte die LED mit der gegebenen Nummer ein (1) oder aus (0).
 
