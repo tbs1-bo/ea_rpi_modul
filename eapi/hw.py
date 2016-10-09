@@ -40,6 +40,8 @@ Schaue in die Dokumentation der anderen Methoden, um weitere
 Quelltextbeispiele zu finden.
 """
 
+# TODO Kodierung für UTF8 am Anfang der Datei angeben. Sonst Probleme unter Py2.
+# https://www.python.org/dev/peps/pep-0263/
 
 # Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird 
 # ein Dummy verwendet.
