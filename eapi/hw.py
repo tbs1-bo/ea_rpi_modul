@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Ein Modul für die Verwendung des Eingabe-Ausgabe-Moduls für den Raspberry
 Pi.
 

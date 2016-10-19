@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Ein Modul, das die Eingabe-Ausgabe-Module für den Raspberry Pi
 netzwerkfähig macht.
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Ein Modul, das verwendet wird, wenn kein Pi vorhanden ist. Es stellt
 Dummy-Funktionalitäten bereit, die Ausgaben auf der Konsole machen.
 """

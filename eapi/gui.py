@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Visualisierungen für die LEDs des EAModuls.
 
 Dieses Paket stellt verschiedene Visualisierungen für die LEDs auf dem EAModul
