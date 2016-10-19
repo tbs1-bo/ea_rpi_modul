@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Tests für verschiedene Komponenten und Klassen aus dem eapi-Modul und
 dessen Unterpaketen.
 """
