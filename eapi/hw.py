@@ -42,7 +42,7 @@ Schaue in die Dokumentation der anderen Methoden, um weitere
 Quelltextbeispiele zu finden.
 """
 
-# Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird 
+# Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird
 # ein Dummy verwendet.
 try:
     import RPi.GPIO as GPIO
@@ -325,7 +325,7 @@ class DimmbaresEAModul(EAModul):
         else:
             raise ValueError("Falsche LED-Farbe.")
 
-
+__ea_modul = None
 def demo_led_taster():
     """
     Ein einfaches Demoprogramm, um die LED und Taster auf dem Board zu prüfen.
@@ -340,30 +340,31 @@ def demo_led_taster():
         (Enter)
         """)
 
-    ea_modul = EAModul()
+    global __ea_modul
+    __ea_modul = EAModul()
 
     def __taster0_gedrueckt(pin):
-        global ea_modul
-        ea_modul.schalte_led(EAModul.LED_GELB, ea_modul.taster_gedrueckt(0))
+        global __ea_modul
+        __ea_modul.schalte_led(EAModul.LED_GELB, __ea_modul.taster_gedrueckt(0))
 
-    ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
+    __ea_modul.taster_event_registrieren(0, __taster0_gedrueckt)
 
     try:
-        while not ea_modul.taster_gedrueckt(1):
-            ea_modul.schalte_led(EAModul.LED_ROT, 1)
+        while not __ea_modul.taster_gedrueckt(1):
+            __ea_modul.schalte_led(EAModul.LED_ROT, 1)
             time.sleep(0.2)
-            ea_modul.schalte_led(EAModul.LED_ROT, 0)
+            __ea_modul.schalte_led(EAModul.LED_ROT, 0)
             time.sleep(0.2)
 
-            ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
+            __ea_modul.schalte_led(EAModul.LED_GRUEN, 1)
             time.sleep(0.5)
-            ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
+            __ea_modul.schalte_led(EAModul.LED_GRUEN, 0)
             time.sleep(0.2)
 
     except KeyboardInterrupt:
-        ea_modul.cleanup()
+        __ea_modul.cleanup()
     finally:
-        ea_modul.cleanup()
+        __ea_modul.cleanup()
 
 
 def demo_dimmen():
