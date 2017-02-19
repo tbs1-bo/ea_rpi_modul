@@ -217,8 +217,8 @@ class EAModul:
         ausgeführt wird.
 
         Die übergebene Methode muss ein Argument haben und wird mit der
-        Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt oder
-        losgelassen wird. Eine einfache Verwendung könnte wie folgt aussehen:
+        Pin-Nur des Tasters aufgerufen, sobald der Taster gedrückt 
+        wird. Eine einfache Verwendung könnte wie folgt aussehen:
 
         >>> def taster0_gedrueckt(pin):
         ...  print("Taster 0 wurde gedrückt.")
@@ -234,8 +234,8 @@ class EAModul:
         if taster_nr < 0 or taster_nr >= len(self._taster):
             raise ValueError("Falsche Taster Nummer." + taster_nr)
 
-        GPIO.add_event_detect(self._taster[taster_nr], GPIO.BOTH)
-        GPIO.add_event_callback(self._taster[taster_nr], methode)
+        GPIO.add_event_detect(self._taster[taster_nr], GPIO.RISING,
+                              callback=methode, bouncetime=200)
 
     def cleanup(self):
         """Setzt alle Pins des Pi wieder in den Ausgangszustand.
