@@ -13,6 +13,7 @@ IN = 2
 OUT = 3
 PUD_DOWN = 4
 BOTH = 5
+RISING = 6
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ def cleanup():
     log.info("cleanup")
 
 
-def add_event_detect(pin, flanke):
+def add_event_detect(pin, flanke, callback, bouncetime):
     log.info("Event registrieren für Pin " + str(pin))
 
 

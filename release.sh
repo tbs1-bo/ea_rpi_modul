@@ -23,7 +23,7 @@ python3 setup.py upload_docs --upload-dir doc/html
 
 echo git commit?
 read
-git commit -a
+git commit -av
 
 echo Tag erstellen und pushen?
 git tag -a v`python3 -c 'import eapi;print(eapi.VERSION)'`
