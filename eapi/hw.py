@@ -212,6 +212,19 @@ class EAModul:
         else:
             raise ValueError("Falsche LED-Farbe.")
 
+    def schalte_leds(self, rot_anaus, gelb_anaus, gruen_anaus):
+        """Schalte alle drei LEDs zu gleichen Zeit an oder aus.
+
+        >>> from eapi.hw import EAModul
+
+        >>> ea_modul = EAModul()
+        >>> ea_modul.schalte_leds(True, False, True)
+        >>> ea_modul.cleanup()"""
+
+        self.schalte_led(EAModul.LED_ROT, rot_anaus)
+        self.schalte_led(EAModul.LED_GELB, gelb_anaus)
+        self.schalte_led(EAModul.LED_GRUEN, gruen_anaus)
+
     def taster_event_registrieren(self, taster_nr, methode):
         """Registriere eine Methode, die bei Betätigung eines Tasters
         ausgeführt wird.
