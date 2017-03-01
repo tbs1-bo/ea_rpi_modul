@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """This script can be installed on you pi. Together with the EA-Modul
 it provides the possibilty to turn off the pi with the press of a
-button. Further the green LED is pulsing when the pi is started. You
-can stop this script by pressing the other button.
+button (for 5 seconds). Further the green LED is pulsing when the pi
+is started. You can stop this script by pressing the other button (for
+2 seconds).
 
 INSTALLATION:
 
