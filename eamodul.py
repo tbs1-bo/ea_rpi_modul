@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """This script can be installed on you pi. Together with the EA-Modul
-it provides the possibilty to turn of the pi with the press of a
-button. Further the green led is pulsing when the pi is started.
+it provides the possibilty to turn off the pi with the press of a
+button. Further the green LED is pulsing when the pi is started. You
+can stop this script by pressing the other button.
 
 INSTALLATION:
 
@@ -20,9 +21,7 @@ INSTALLATION:
 
 
 If the EAModul should be used otherwise, the script can be terminated
-by issuing:
-
-   $ pkill -f eamodul.py
+by pressing the other button.
 
 """
 
