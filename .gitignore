@@ -93,3 +93,6 @@ ENV/
 
 # Pycharm Project directories
 .idea/
+
+# virtual environment
+eapi-ve/
