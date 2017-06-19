@@ -8,7 +8,7 @@ import eapi
 #
 setuptools.setup(
     name="eapi",
-    url="https://github.com/pintman/ea_rpi_modul",
+    url="https://github.com/tbs1-bo/ea_rpi_modul",
     version= eapi.VERSION,
     description="Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi.",
     long_description="Ein Modul zu Ansteuerung eines Eingabe-Ausgabe-Moduls fuer den Raspberry. Fuer die Ausgabe dienen LEDs und fuer die Eingabe Taster. Es kommt im Bildungsbereich zum Einsatz.",

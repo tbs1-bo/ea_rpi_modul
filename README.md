@@ -41,12 +41,12 @@ Installation aus den Quellen
 Die Quelltexte für das Paket liegen bei github und können auch direkt von dort
 installiert werden:
 
-    $ pip3 install git+https://github.com/pintman/ea_rpi_modul
+    $ pip3 install git+https://github.com/tbs1-bo/ea_rpi_modul
 
 Wer mit den Quelltexten arbeiten möchte, sollte das repository auschecken und
 darüber das Paket selbst installieren.
 
-    $ git clone https://github.com/pintman/ea_rpi_modul.git
+    $ git clone https://github.com/tbs1-bo/ea_rpi_modul.git
     $ cd ea_rpi_modul
     $ python3 setup.py install
 
