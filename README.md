@@ -153,9 +153,9 @@ Der Quelltext ist gut dokumentiert. Man kann sich die Hilfe der Klasse
 anzeigen lassen.
 
 Auf der Kommandozeile unter Linux hilft der Befehl `pydoc3` weiter. Mit
-`pydoc3 eapi.hw` oder wird die Dokumentation für das Modul angezeigt.
+`pydoc3 eapi.hw` wird die Dokumentation für das Modul angezeigt.
 
-Unter Windows ist der Befehl pydoc3 nicht standardmäßig vorhanden. Hier hilft
+Unter Windows ist der Befehl `pydoc3` standardmäßig nicht vorhanden. Hier hilft
 der Aufruf `python3 -m pydoc eapi.hw` weiter.
 
 Eine HTML-Version der Dokumentation kann unter der Adresse
