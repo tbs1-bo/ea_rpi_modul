@@ -14,16 +14,13 @@ Installation
 
 Das Modul befindet sich im Python-Package-Index (PyPi) unter dem Namen
 [eapi](https://pypi.python.org/pypi/eapi). Es kann mit dem folgenden Befehl
-installiert werden:
+auf dem Raspberry Pi installiert werden:
 
     sudo pip3 install eapi
 
 Wenn die Installation nur lokal für einen User erfolgen soll, heißt der Befehl 
 
     pip3 install --user eapi
-
-Unter Windows gibt es kein `sudo`. Daher kann dieser Befehl unter Windows
-ohne `sudo` ausgeführt werden.
 
 
 Upgrade
