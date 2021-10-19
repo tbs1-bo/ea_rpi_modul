@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "eapi"
+version = "0.4.9"
+description = "Modul zur Ansteuerung eines EA-Moduls fuer den Raspberry Pi."
+readme = "README.md"
+authors = ["Marco Bakera <bakera@tbs1.de>"]
+license = "MIT"
+classifiers=[  # gemäß https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Education",
+        "Natural Language :: German",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Education",
+        "Topic :: System :: Hardware",
+    ]
+    
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.11.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
