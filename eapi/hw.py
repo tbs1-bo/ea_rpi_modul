@@ -45,6 +45,7 @@ Quelltextbeispiele zu finden.
 # Versuche, die Bibliothek für GPIO-Pins zu laden. Wenn dies scheitert, wird
 # ein Dummy verwendet.
 try:
+    # TODO switch to gpiozero
     import RPi.GPIO as GPIO
 except ImportError:
     import eapi.GPIODummy as GPIO
